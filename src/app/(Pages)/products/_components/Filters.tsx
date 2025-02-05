@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import React from "react";
+import { useForm } from "react-hook-form";
 
 function Filters({
   handleFilter,
@@ -21,25 +22,15 @@ function Filters({
     category: string
   ) => Promise<void>;
 }) {
-  const updateQueryParams = (key: string, value: string) => {
-    const searchParams = new URLSearchParams(window.location.search);
-    if (value === "all" || value === "") {
-      searchParams.delete(key); // Remove the parameter if its value is default
-    } else {
-      searchParams.set(key, value); // Set or update the parameter
-    }
-    // queryClient.invalidateQueries()
-    handleFilter(1, searchParams.get("search") || "", searchParams.get("gender") || "", searchParams.get("category") || "")
-    window.history.pushState(
-      null,
-      "",
-      `${window.location.pathname}?${searchParams.toString()}`
-    );
-  };
+  
+  const {register,setValue,getValues,reset} = useForm({
+    defaultValues: {
+      search: "",
+      gender: "all",
+      category: "all",
+    },
 
-  const handleChange = (name: string, value: string) => {
-    updateQueryParams(name, value);
-  };
+  })
   return (
     <div className="flex flex-col md:flex-row gap-4 items-center mb-8">
       <div className="relative flex-1">
@@ -47,18 +38,19 @@ function Filters({
         <Input
           placeholder="Search for fashion items..."
           className="pl-10"
-          name="search"
+          {...register("search")}
           onChange={(e) => {
-            e.preventDefault();
-            handleChange("search", e.target.value);
+            handleFilter(1, e.target.value, "all", "all");
           }}
         />
       </div>
       <div className="flex gap-4 w-full md:w-auto">
         <Select
+        {...register("gender")}
           //   value={filters.gender}
           onValueChange={(value) => {
-            handleChange("gender", value);
+            setValue("gender", value);
+            handleFilter(1, getValues().search, value, getValues().category);
           }}
         >
           <SelectTrigger className="w-[140px]">
@@ -73,8 +65,10 @@ function Filters({
         </Select>
         <Select
           //   value={filters.category}
+          {...register("category")}
           onValueChange={(value) => {
-            handleChange("category", value);
+            setValue("category", value);
+            handleFilter(1, getValues().search, getValues().gender , value);
           }}
         >
           <SelectTrigger className="w-[140px]">
@@ -90,9 +84,8 @@ function Filters({
         <Button
           variant="outline"
           onClick={() => {
-            updateQueryParams("search", "");
-            updateQueryParams("gender", "all");
-            updateQueryParams("category", "all");
+            reset()
+            handleFilter(1, "", "all", "all");
           }}
           className="bg-white text-red-600 border-red-600 hover:bg-red-50"
         >

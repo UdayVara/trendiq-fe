@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -29,7 +30,7 @@ function UserDropDown() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+            <DropdownMenuItem><Link href="/profile">Profile</Link></DropdownMenuItem>
             <DropdownMenuItem onClick={async() =>{
                 const res = await signOutAction()
 

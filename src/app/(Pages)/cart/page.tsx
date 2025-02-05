@@ -1,37 +1,17 @@
+import { getCart } from '@/api/cart.actions'
 import CartItem from './_components/CartItem'
 import OrderSummary from './_components/OrderSummary'
 import { Button } from "@/components/ui/button"
 import { ShoppingBag } from 'lucide-react'
 
-const cartItems = [
-  {
-    id: 1,
-    name: "Vintage Denim Jacket",
-    price: 89.99,
-    quantity: 1,
-    image: "/placeholder.svg?height=120&width=120"
-  },
-  {
-    id: 2,
-    name: "Classic White Sneakers",
-    price: 59.99,
-    quantity: 2,
-    image: "/placeholder.svg?height=120&width=120"
-  },
-  {
-    id: 3,
-    name: "Leather Messenger Bag",
-    price: 129.99,
-    quantity: 1,
-    image: "/placeholder.svg?height=120&width=120"
-  }
-]
 
-export default function CartPage() {
+
+export default async function CartPage() {
+  const cartItems = await getCart()
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>
-      {cartItems.length === 0 ? (
+      {cartItems.data?.length === 0 ? (
         <div className="text-center py-16">
           <ShoppingBag className="mx-auto h-16 w-16 text-gray-400" />
           <h2 className="mt-4 text-xl font-medium text-gray-900">Your cart is empty</h2>
@@ -48,13 +28,13 @@ export default function CartPage() {
             <h2 id="cart-heading" className="sr-only">
               Items in your shopping cart
             </h2>
-            <ul role="list" className="divide-y divide-gray-200">
-              {cartItems.map((item) => (
+            <ul role="list" className='flex flex-col gap-y-6'>
+              {cartItems?.data.map((item:any) => (
                 <CartItem key={item.id} item={item} />
               ))}
             </ul>
           </section>
-          <OrderSummary cartItems={cartItems} />
+          <OrderSummary cartItems={cartItems?.data} />
         </div>
       )}
     </div>

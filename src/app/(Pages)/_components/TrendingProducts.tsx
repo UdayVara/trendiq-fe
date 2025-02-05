@@ -1,4 +1,4 @@
-
+"use client"
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,95 +10,29 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
+import { getTrendingProducts } from "@/api/product.actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-const products = [
-  {
-    id: 1,
-    name: "Bold Graphic T-Shirt",
-    price: 29.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1727708290_1925294.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 2,
-    name: "Statement Hoodie",
-    price: 49.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1665832747_8175070.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 3,
-    name: "Edgy Ripped Jeans",
-    price: 59.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1691039125_6391875.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 4,
-    name: "Leather Biker Jacket",
-    price: 89.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1732859746_1094580.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 1,
-    name: "Bold Graphic T-Shirt",
-    price: 29.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1727708290_1925294.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 2,
-    name: "Statement Hoodie",
-    price: 49.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1665832747_8175070.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 3,
-    name: "Edgy Ripped Jeans",
-    price: 59.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1691039125_6391875.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 4,
-    name: "Leather Biker Jacket",
-    price: 89.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1732859746_1094580.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 1,
-    name: "Bold Graphic T-Shirt",
-    price: 29.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1727708290_1925294.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 2,
-    name: "Statement Hoodie",
-    price: 49.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1665832747_8175070.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 3,
-    name: "Edgy Ripped Jeans",
-    price: 59.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1691039125_6391875.jpg?format=webp&w=480&dpr=1.3",
-  },
-  {
-    id: 4,
-    name: "Leather Biker Jacket",
-    price: 89.99,
-    image:
-      "https://prod-img.thesouledstore.com/public/theSoul/uploads/catalog/product/1732859746_1094580.jpg?format=webp&w=480&dpr=1.3",
-  },
-];
+
 
 export default function TrendingProducts() {
+  const [products,setProducts] = useState<any[]>([])
+
+  const fetchTrendingProducts = async () => {
+    const res = await getTrendingProducts()
+console.log("res",res)
+    if(res.success){
+      setProducts(res.data)
+    }else{
+      toast.error(res.message)
+    }
+  }
+const router = useRouter()
+  useEffect(()=>{
+fetchTrendingProducts()
+  },[])
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -106,26 +40,35 @@ export default function TrendingProducts() {
           Trending Fashion
         </h2>
         <div className="w-full md:px-0 px-6">
-          <Carousel>
+         <Carousel>
             <CarouselContent>
-              {products.map((product,index) => (
+              {!products || products?.length == 0 ? [1,2,3].map((item)=>
+               <CarouselItem key={item} className="md:basis-1/3 select-none"><div className="animate-pulse " key={item}>
+                <div className="h-96 bg-gray-300 rounded-md mb-4"></div>
+                      <div className="h-6 bg-gray-300 rounded mb-2"></div>
+                      <div className="h-4 bg-gray-300 rounded"></div>
+                      <div className="h-10 bg-gray-300 rounded mt-4"></div>
+              </div></CarouselItem>
+              ) :products?.map((product,index) => (
                 <CarouselItem key={index} className="md:basis-1/3 select-none">
-                  <Card>
-                    <CardContent className="p-4">
+                  <Card className="" onClick={()=>{
+router.push("/product/"+product.id+"")
+                  }}>
+                    <CardContent className="p-4 group">
                       <Image
                         width={1000}
                         height={1000}
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-96 max-h-96 object-top object-cover mb-4 rounded-md"
+                        src={product.imageUrl}
+                        alt={product.title}
+                        className="w-full group-hover:scale-105 duration-300 cursor-pointer h-96 max-h-96 object-top object-cover mb-4 rounded-md"
                       />
                       <h3 className="font-semibold text-lg mb-2">
-                        {product.name}
+                        {product.title}
                       </h3>
                       <div className="flex justify-between items-center">
-                        <span className="text-xl font-bold">
-                        ₹ {product.price.toFixed(2)}
-                        </span>
+                        {/* <span className="text-xl font-bold">
+                        ₹ {product.product_inventory[0].price.toFixed(2)}
+                        </span> */}
                         <Badge className="bg-red-100 text-red-800">
                           Trending
                         </Badge>

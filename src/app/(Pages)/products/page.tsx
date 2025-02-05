@@ -7,8 +7,7 @@ import React from "react";
 const PageContainer = React.lazy(() => import("@/components/Layout/PageContainer"));
 
 export default async function ProductListing() {
-  const data = await axiosInstance.get("/user/product?page=1&size=50");
-  console.log(data.data)
+  const data = await axiosInstance.get("/product?page=1&size=50");
   return (
     <div className="min-h-screen bg-background">
       <PageContainer>

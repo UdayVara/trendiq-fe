@@ -8,6 +8,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen mt-2">
       <div className="flex-grow">
         <Hero />
+      
         <TrendingProducts />
         <AboutUs />
         <ShopByCategory />

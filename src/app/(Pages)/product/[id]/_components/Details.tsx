@@ -5,20 +5,19 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axiosInstance from "@/lib/axios";
 import { Star } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
 function Details({ product }: { product: any }) {
-  const [selectedColor, setSelectedColor] = useState("black");
   const [selectedSize, setSelectedSize] = useState(
     product.product_inventory[0].size.id
   );
   const [selectedVariant, setSelectedVariant] = useState(
     product.product_inventory[0]
   );
-  const colors = [
-    { id: product.color, name: product.color, class: "bg-black" },
-  ];
+  const colors = product?.availableColors || [];
 
   const sizes = [...product.product_inventory];
   const reviews = [
@@ -40,6 +39,7 @@ function Details({ product }: { product: any }) {
 
   const addProductToCart = async () => {
     try {
+      
       const response = await axiosInstance.post("/cart", {
         productId: product.id,
         quantity: 1,
@@ -47,6 +47,7 @@ function Details({ product }: { product: any }) {
           (item:any) => item.size.id == selectedSize
         ).id,
       });
+      console.log(response.data)
       if (response.data?.statusCode == 201) {
         toast.success(response.data.message || "Product Added Successfully");
       } else {
@@ -57,13 +58,14 @@ function Details({ product }: { product: any }) {
       toast.error(error.message || "Something went wrong");
     }
   };
+  const router = useRouter()
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">{product.title}</h1>
+        <h1 className="text-3xl font-bold">{product.title} <span className="capitalize">{product.color}</span></h1>
         <h3 className="text-lg text-neutral-600">{product.category.name}</h3>
-        <div className="flex items-center gap-2 mt-2">
-          <div className="flex">
+        <div className="flex items-center gap-4 mt-2">
+          <div className="flex gap-x-0.5">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
@@ -75,18 +77,17 @@ function Details({ product }: { product: any }) {
           </div>
           <span className="text-muted-foreground">(128 reviews)</span>
         </div>
-        <p className="text-2xl font-bold mt-4">₹29.99</p>
+        <p className="text-2xl font-medium mt-4">₹ {(selectedVariant?.price - (selectedVariant?.price * selectedVariant?.discount/100))?.toFixed(2)} <span className="text-muted-foreground text-xl font-regular line-through">{selectedVariant?.price?.toFixed(2)}</span><span className="text-xl text-green-600"> ({selectedVariant?.discount}%)</span></p>
       </div>
 
       <div className="space-y-4">
         <div>
           <Label className="text-base">Color</Label>
           <RadioGroup
-            value={selectedColor}
-            onValueChange={setSelectedColor}
+            onValueChange={(val)=>{router.push("/product/"+val+"")}}
             className="flex gap-3 mt-2"
           >
-            {colors.map((color) => (
+            {colors.map((color:any) => (
               <Label
                 key={color.id}
                 htmlFor={`color-${color.id}`}
@@ -98,14 +99,14 @@ function Details({ product }: { product: any }) {
                   className="sr-only"
                 />
                 <div className="flex flex-col items-center gap-1">
-                  <div
-                    className={`w-8 h-8 rounded-full border  ${
-                      selectedColor === color.id
+                  <Image width={1000} height={1000} src={color?.imageUrl} alt={color.color}
+                    className={`w-8 h-8 object-contain rounded-full border  ${
+                      product.id === color.id
                         ? "ring-2 ring-primary ring-offset-2"
                         : ""
                     }`}
                   />
-                  <span className="text-sm">{color.name}</span>
+                  <span className="text-sm capitalize">{color.color}</span>
                 </div>
               </Label>
             ))}
@@ -169,17 +170,7 @@ function Details({ product }: { product: any }) {
         </TabsList>
         <TabsContent value="description" className="mt-4">
           <div className="prose prose-sm">
-            <p>
-              The Bold Graphic T-Shirt features a striking design that makes a
-              statement. Crafted from premium cotton blend fabric, this
-              oversized fit t-shirt offers both style and comfort.
-            </p>
-            <ul className="mt-4 space-y-2">
-              <li>100% premium cotton blend</li>
-              <li>Oversized fit</li>
-              <li>Machine washable</li>
-              <li>Unique graphic print</li>
-            </ul>
+            {product.description}
           </div>
         </TabsContent>
         <TabsContent value="reviews" className="mt-4">

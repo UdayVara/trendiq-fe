@@ -1,20 +1,11 @@
 import { Button } from "@/components/ui/button"
 
-interface OrderSummaryProps {
-  cartItems: Array<{
-    id: number
-    name: string
-    price: number
-    quantity: number
-  }>
-}
 
-export default function OrderSummary({ cartItems }: OrderSummaryProps) {
-  const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-  const shipping = 10 // Example shipping cost
-  const tax = subtotal * 0.1 // Example tax rate of 10%
-  const total = subtotal + shipping + tax
 
+export default function OrderSummary({ cartItems }:any) {
+  const subtotal = cartItems.reduce((total:any, item:any) => total + item?.product_inventory?.price * item.quantity, 0)
+  const discount = Math.round(cartItems.reduce((total:any, item:any) => total + ((item?.product_inventory?.discount * item?.product_inventory?.price) / 100) * item.quantity, 0)) // Example shipping cost
+  const total = subtotal - discount +100
   return (
     <section
       aria-labelledby="summary-heading"
@@ -27,23 +18,23 @@ export default function OrderSummary({ cartItems }: OrderSummaryProps) {
       <dl className="space-y-4">
         <div className="flex items-center justify-between">
           <dt className="text-sm text-gray-600">Subtotal</dt>
-          <dd className="text-sm font-medium text-gray-900">${subtotal.toFixed(2)}</dd>
+          <dd className="text-sm font-medium text-gray-900">₹ {subtotal}</dd>
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
           <dt className="flex items-center text-sm text-gray-600">
-            <span>Shipping estimate</span>
+            <span>Discount</span>
           </dt>
-          <dd className="text-sm font-medium text-gray-900">${shipping.toFixed(2)}</dd>
+          <dd className="text-sm font-medium text-green-600">₹ {discount}</dd>
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
           <dt className="flex text-sm text-gray-600">
             <span>Tax estimate</span>
           </dt>
-          <dd className="text-sm font-medium text-gray-900">${tax.toFixed(2)}</dd>
+          <dd className="text-sm font-medium text-gray-900">₹ 100</dd>
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-          <dt className="text-base font-medium text-gray-900">Order total</dt>
-          <dd className="text-base font-medium text-gray-900">${total.toFixed(2)}</dd>
+          <dt className="text-lg font-medium text-gray-900">Order total</dt>
+          <dd className="text-lg font-medium text-gray-900">₹ {total}</dd>
         </div>
       </dl>
 

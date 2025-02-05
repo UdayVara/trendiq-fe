@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import axios from "axios";
 import axiosInstance from "./lib/axios";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -12,16 +13,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           isSignup: string;
           username: string;
         };
-        console.log("Credentials", credentials);
         try {
           if (isSignup == "true") {
             // signup code
-            const res = await axiosInstance.post("/auth/signup", {
+            const res = await axiosInstance.post(`/signup`, {
               username,
               email,
               password,
             });
-            console.log(res.data)
             if (res.data.statusCode === 201) {
               return {
                 username: res.data.user.username,
@@ -34,11 +33,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               throw new Error(res.data.message || "Something went wrong");
             }
           } else {
-            const res = await axiosInstance.post("/auth/signin", {
+            const res = await axiosInstance.post(`/signin`, {
               email,
               password,
             });
-console.log(res,"res")
             if (res.data.statusCode === 201) {
               return {
                 username: res.data.user.username,
@@ -52,12 +50,12 @@ console.log(res,"res")
             }
           }
         } catch (error: any) {
+          console.log("Auth Error",error);
           throw new Error(error.message || "Something went wrong");
         }
       },
     }),
   ],
-  secret: "dfsdfsdfsd",
   trustHost: true,
   callbacks: {
     jwt(params) {

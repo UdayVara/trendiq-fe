@@ -5,7 +5,9 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-  baseURL: `${process.env.NEXT_APP_API_URL || "http://localhost:5643/api/v1"}`// process.env.API_BASE_URL,
+  baseURL: process.env.NEXT_APP_API_URL 
+  ? `${process.env.NEXT_APP_API_URL}/user` 
+  : "http://localhost:5643/api/v1/user",
 });
 
 axiosInstance.interceptors.request.use(

@@ -21,6 +21,7 @@ function ProductsContainer({ data }: { data: product[] }) {
     setLoading(true);
     console.log(pageNumber, search, gender, category);
     const products = await getProducts(pageNumber, search, gender, category);
+    console.log("Products",products)
     setProducts(products.data);
     setLoading(false)
   };
@@ -32,9 +33,9 @@ function ProductsContainer({ data }: { data: product[] }) {
         <Filters handleFilter={handleFilter} />
         {!loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
-            {products.map((product: product, index: any) => (
+            {products.map((product: any, index: any) => (
               <Card key={index} >
-                <CardContent onClick={() => {router.push("/product/"+product.title+"")}} className="p-4 group cursor-pointer">
+                <CardContent onClick={() => {router.push("/product/"+product.id+"")}} className="p-4 group cursor-pointer">
                   <Image
                     width={1000}
                     height={1000}
