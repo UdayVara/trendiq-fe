@@ -6,11 +6,10 @@ import { UserCircle, ShoppingBag, MapPin, Heart, LifeBuoy, FileText, Settings } 
 import UserInfo from "./UserInfo"
 import UpdateProfile from "./UpdateProfile"
 import MyOrders from "./MyOrders"
-import MyAddresses from "./MyAddresses"
+import MyAddresses from "./Address/MyAddresses"
 import Wishlist from "./WishList"
 import Support from "./Support"
 import TermsAndConditions from "./TermsAndConditions"
-import { Button } from "@/components/ui/button"
 
 
 export default function ProfilePage() {
@@ -28,7 +27,7 @@ export default function ProfilePage() {
           <Card className="lg:w-64 shrink-0 min-h-full h-full border-none shadow-lg">
             
             <CardContent className="p-0 flex-grow min-h-full h-full bg-white rounded-b-lg">
-              <TabsList className="flex flex-col w-full min-h-full h-full space-y-4 p-2">
+              <TabsList className="flex flex-col w-full min-h-full profile-tabs-list h-full space-y-4 p-2 " >
                 <TabsTrigger
                   value="info"
                   className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
@@ -116,21 +115,7 @@ export default function ProfilePage() {
               </Card>
             </TabsContent>
             <TabsContent value="addresses" className="h-full mt-0">
-              <Card className="h-full border-none shadow-lg">
-                <CardHeader className="border-b bg-white rounded-t-lg">
-                  <div className="flex flex-row items-start justify-between">
-<div>
-
-                  <CardTitle>My Addresses</CardTitle>
-                  <CardDescription>Manage your shipping addresses</CardDescription>
-</div>
-<Button>Add New Address</Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="bg-white rounded-b-lg pt-4">
-                  <MyAddresses />
-                </CardContent>
-              </Card>
+              <MyAddresses />
             </TabsContent>
             <TabsContent value="wishlist" className="h-full mt-0">
               <Card className="h-full border-none shadow-lg">

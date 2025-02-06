@@ -2,7 +2,31 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+input::-webkit-outer-spin-button, 
 
+input::-webkit-inner-spin-button {
+
+  -webkit-appearance: none; 
+
+  margin: 0; 
+
+} 
+
+
+
+/* For Firefox, use this: */
+
+input[type=number] { 
+
+  -moz-appearance: textfield; 
+
+} 
+.profile-tabs-list{
+
+  [data-state="active"]{
+    @apply bg-primary text-white;
+  }
+}
 
 @layer base {
  
