@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 
 function Filters({
   handleFilter,
+  form:{register,setValue,getValues,reset}
 }: {
   handleFilter: (
     pageNumber: number,
@@ -21,16 +22,14 @@ function Filters({
     gender: string,
     category: string
   ) => Promise<void>;
+  form:UseFormReturn<{
+    search: string;
+    gender: string;
+    category: string;
+}, any, undefined>
 }) {
   
-  const {register,setValue,getValues,reset} = useForm({
-    defaultValues: {
-      search: "",
-      gender: "all",
-      category: "all",
-    },
-
-  })
+  
   return (
     <div className="flex flex-col md:flex-row gap-4 items-center mb-8">
       <div className="relative flex-1">
@@ -40,6 +39,8 @@ function Filters({
           className="pl-10"
           {...register("search")}
           onChange={(e) => {
+            
+            setValue("search", e.target.value);
             handleFilter(1, e.target.value, "all", "all");
           }}
         />

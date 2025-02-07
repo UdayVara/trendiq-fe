@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Minus, Plus, PlusIcon, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/navigation";
@@ -17,19 +17,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartItem({ item }: any) {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [removedialog, setRemovedialog] = useState(false);
+  const queryClient = useQueryClient()
   const handleDeleteCartItem = async () => {
     setBtnLoading(true);
     try {
       const res = await axiosInstance.delete(`/cart/${item.id}`);
       if (res.data?.statusCode == 201) {
         toast.success(`Item removed successfully`);
-        router.refresh();
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
         toast.error(res.data.message || "Something went wrong");
       }
@@ -54,7 +55,7 @@ export default function CartItem({ item }: any) {
 
       if (res.data?.statusCode == 201) {
         toast.success(`Item quantity updated successfully`);
-        router.refresh();
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
         toast.error(res.data.message || "Something went wrong");
       }
@@ -85,7 +86,7 @@ export default function CartItem({ item }: any) {
                   <a href="#" className="hover:text-gray-800 flex flex-row items-center">
                     {item?.product?.title}  <Button size={"sm"} onClick={()=>{
                       setRemovedialog(true)
-                    }} variant={"ghost"} className='ml-auto text-primary block'><Trash2 /></Button>
+                    }} variant={"ghost"} className='ml-auto text-primary block'><Trash2  size={18}/></Button>
                   </a>
                 </h3>
                 <p className="text-xs text-grey-600 mb-2">
@@ -101,29 +102,12 @@ export default function CartItem({ item }: any) {
               <div className="mt-4 sm:mt-0 flex items-center justify-between ">
                 <div className="flex flex-col items-end">
                   <div className="flex items-center gap-3 pt-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-6 w-6 text-primary rounded-full"
-                      onClick={() => {
-                        addRemoveQuantity("sub");
-                      }}
-                    >
-                      <Minus className="h-4 w-4" />
-                      <span className="sr-only">Decrease quantity</span>
-                    </Button>
+                    
+                      <Minus className="w-6 h-6 p-1 rounded-full border-primary border text-primary cursor-pointer hover:bg-neutral-100 transition-all duration-100" onClick={()=>{addRemoveQuantity("sub")}} />
                     {item?.quantity}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-6 w-6 text-primary rounded-full"
-                      onClick={() => {
-                        addRemoveQuantity("add");
-                      }}
-                    >
-                      <Plus className="h-4 w-4" />
-                      <span className="sr-only">Increase quantity</span>
-                    </Button>
+                    
+                      <PlusIcon className="w-6 h-6 p-1 rounded-full border-primary border text-primary cursor-pointer hover:bg-neutral-100 transition-all duration-100" onClick={()=>{addRemoveQuantity("add")}} />
+                    
                   </div>
                   <p className="text-base font-medium text-gray-900 mt-4">
                     ₹{" "}

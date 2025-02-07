@@ -8,32 +8,51 @@ import React, { useState } from "react";
 import Filters from "./Filters";
 import { getProducts } from "@/api/product.actions";
 import { useRouter } from "next/navigation";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 
 function ProductsContainer({ data }: { data: product[] }) {
-  const [products, setProducts] = useState<product[]>(data);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient()
+  const response = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => getProducts(1,form.getValues("search"),form.getValues("gender"),form.getValues("category")),
+    initialData:{success:true,message:"",data:data},
+    placeholderData:(prevData)=>prevData
+  })
+  
   const handleFilter = async (
-    pageNumber: number,
-    search: string,
-    gender: string,
-    category: string
+  
   ) => {
-    setLoading(true);
-    console.log(pageNumber, search, gender, category);
-    const products = await getProducts(pageNumber, search, gender, category);
-    console.log("Products",products)
-    setProducts(products.data);
-    setLoading(false)
+    
+    const searchParams = new URLSearchParams(window.location.search);
+    if(form.getValues("category") && form.getValues("category") != "all") searchParams.set("category", form.getValues("category"));
+    else searchParams.delete("category");
+    if(form.getValues("gender") && form.getValues("gender") != "all") searchParams.set("gender", form.getValues("gender"));
+    else searchParams.delete("gender");
+    if(form.getValues("search")) searchParams.set("search", form.getValues("search"));
+    router.push(`?${searchParams.toString()}`, { scroll: false })
+    queryClient.invalidateQueries({
+      queryKey: ["products"],
+
+    })
+    
   };
   const router = useRouter()
+const form = useForm({
+    defaultValues: {
+      search: "",
+      gender: "all",
+      category: "all",
+    },
 
+  })
   return (
     <>
       <div>
-        <Filters handleFilter={handleFilter} />
-        {!loading ? (
+        <Filters handleFilter={handleFilter} form={form}/>
+        {!response.isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
-            {products.map((product: any, index: any) => (
+            {response && response?.data && response?.data?.data?.map((product: any, index: any) => (
               <Card key={index} >
                 <CardContent onClick={() => {router.push("/product/"+product.id+"")}} className="p-4 group cursor-pointer">
                   <Image

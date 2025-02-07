@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import NextAuthProvider from "@/Providers/NextAuthProvider/NextAuthProvider";
 import { auth } from "@/auth";
+import ReactQueryProviders from "@/Providers/ReactQueryProvider/ReactProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,10 +33,12 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div>
           <NextAuthProvider session={session}>
+            <ReactQueryProviders>
               <div>
                 <Toaster />
               </div>
               <div>{children}</div>
+            </ReactQueryProviders>
           </NextAuthProvider>
         </div>
       </body>
