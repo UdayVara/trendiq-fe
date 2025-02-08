@@ -21,7 +21,7 @@ input[type=number] {
   -moz-appearance: textfield; 
 
 } 
-.profile-tabs-list{
+.highlighted-list{
 
   [data-state="active"]{
     @apply bg-primary text-white;

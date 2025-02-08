@@ -159,21 +159,21 @@ function Details({ product }: { product: any }) {
           <h4 className="text-green-600  text-lg font-semibold">In Stock</h4>
         )
       )}
-      <Button size="lg" className="w-full" onClick={addProductToCart}>
+      <Button size="lg" variant={'outline'} className="w-full text-primary" onClick={addProductToCart}>
         Add to Cart
       </Button>
 
       <Tabs defaultValue="description" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="description">Description</TabsTrigger>
-          <TabsTrigger value="reviews">Reviews</TabsTrigger>
+        <TabsList  className="grid w-full p-0 grid-cols-2 highlighted-list">
+          <TabsTrigger value="description" className="my-0 duration-500">Description</TabsTrigger>
+          <TabsTrigger value="reviews" className="my-0 duration-500">Reviews</TabsTrigger>
         </TabsList>
-        <TabsContent value="description" className="mt-4">
+        <TabsContent value="description" className="mt-4 duration-500 transition-all">
           <div className="prose prose-sm">
             {product.description}
           </div>
         </TabsContent>
-        <TabsContent value="reviews" className="mt-4">
+        <TabsContent value="reviews" className="mt-4 duration-500 transition-all">
           <div className="space-y-6">
             {reviews.map((review) => (
               <div key={review.id} className="border-b pb-4">

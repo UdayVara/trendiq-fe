@@ -1,3 +1,4 @@
+import CheckoutDialog from "@/components/Layout/Dialogs/CheckoutDialog"
 import { Button } from "@/components/ui/button"
 
 
@@ -7,6 +8,21 @@ export default function OrderSummary({ cartItems }:any) {
   const discount = Math.round(cartItems.reduce((total:any, item:any) => total + ((item?.product_inventory?.discount * item?.product_inventory?.price) / 100) * item.quantity, 0)) // Example shipping cost
   const total = subtotal - discount +100
   return (
+    <div className="space-y-6">
+ <div className="pl-2">
+  <div className="address-header flex flex-row items-start justify-between">
+
+                  <h2 className="font-semibold text-lg mb-2 ">Delivery Address</h2>
+                  <Button variant={"ghost"} className="hover:bg-transparent text-primary p-0" size={"sm"}>Change</Button>
+  </div>
+                  <div className="text-sm space-y-1 text-muted-foreground pl-2">
+                    <p className="font-medium text-foreground">John Smith</p>
+                    <p>123 Main Street, Apartment 4B</p>
+                    <p>Mumbai, Maharashtra 400001</p>
+                    <p>Phone: +91 98765 43210</p>
+                  </div>
+                  
+                </div>
     <section
       aria-labelledby="summary-heading"
       className="bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8 lg:mt-0"
@@ -39,11 +55,11 @@ export default function OrderSummary({ cartItems }:any) {
       </dl>
 
       <div className="mt-6">
-        <Button className="w-full">
-          Proceed to Checkout
-        </Button>
+        <CheckoutDialog />
       </div>
     </section>
+
+      </div>
   )
 }
 

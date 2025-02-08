@@ -35,7 +35,7 @@ export default async function RootLayout({
           <NextAuthProvider session={session}>
             <ReactQueryProviders>
               <div>
-                <Toaster />
+                <Toaster  theme="light"/>
               </div>
               <div>{children}</div>
             </ReactQueryProviders>

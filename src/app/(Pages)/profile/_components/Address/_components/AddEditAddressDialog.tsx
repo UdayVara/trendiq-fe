@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import axiosInstance from "@/lib/axios";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 const formSchema = z.object({
   name: z.string(),
@@ -40,7 +41,7 @@ function AddEditAddressDialog({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   address?: any | null;
-  refetch:() => Promise<void>
+  refetch:(options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

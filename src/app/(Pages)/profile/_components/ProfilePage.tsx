@@ -27,7 +27,7 @@ export default function ProfilePage() {
           <Card className="lg:w-64 shrink-0 min-h-full h-full border-none shadow-lg">
             
             <CardContent className="p-0 flex-grow min-h-full h-full bg-white rounded-b-lg">
-              <TabsList className="flex flex-col w-full min-h-full profile-tabs-list h-full space-y-4 p-2 " >
+              <TabsList className="flex flex-col w-full min-h-full highlighted-list h-full space-y-4 p-2 " >
                 <TabsTrigger
                   value="info"
                   className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
