@@ -4,38 +4,42 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { product } from "@/types/product";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import Filters from "./Filters";
 import { getProducts } from "@/api/product.actions";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { createWishlist, deleteWishlist, getWishlist } from "@/api/wishlist.actions";
+import { useSession } from "next-auth/react";
+import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
+import { toast } from "sonner";
 
-function ProductsContainer({ data }: { data: product[] }) {
+function ProductsContainer({ data,wishlist }: { data: product[] ,wishlist:any[]}) {
   const queryClient = useQueryClient()
+  const user = useSession()
   const response = useQuery({
     queryKey: ["products"],
     queryFn: async () => getProducts(1,form.getValues("search"),form.getValues("gender"),form.getValues("category")),
-    initialData:{success:true,message:"",data:data},
+    initialData:{success:true,message:"",data:data,wishlist:[]},
     placeholderData:(prevData)=>prevData
   })
   
-  const handleFilter = async (
-  
-  ) => {
-    
-    const searchParams = new URLSearchParams(window.location.search);
-    if(form.getValues("category") && form.getValues("category") != "all") searchParams.set("category", form.getValues("category"));
-    else searchParams.delete("category");
-    if(form.getValues("gender") && form.getValues("gender") != "all") searchParams.set("gender", form.getValues("gender"));
-    else searchParams.delete("gender");
-    if(form.getValues("search")) searchParams.set("search", form.getValues("search"));
-    router.push(`?${searchParams.toString()}`, { scroll: false })
-    queryClient.invalidateQueries({
-      queryKey: ["products"],
-
+    const wishlistQuery = useQuery({
+      queryKey: ["wishlist"],
+      queryFn: async () => getWishlist(),
+      initialData:{success:true,message:"",data:wishlist},
+      placeholderData:(prevData)=>prevData
     })
-    
+  
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleFilter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  
+    timeoutRef.current = setTimeout(() => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    }, 300); // 300ms debounce
   };
   const router = useRouter()
 const form = useForm({
@@ -46,6 +50,34 @@ const form = useForm({
     },
 
   })
+
+  const handleAddWishlist = async (productId: string) => {
+    try {
+     const res = await createWishlist(productId)
+      if (res.success) {
+        toast.success(res.data.message || "Product Added to wishlist");
+        queryClient.invalidateQueries({ queryKey: ["wishlist","products"] });
+      } else {
+        toast.error(res.data.message || "Something went wrong");
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+    }
+  }
+
+  const handleRemoveWishlist = async (productId: string) => {
+    try {
+     const res = await deleteWishlist(productId)
+      if (res.success) {
+        toast.success(res.data.message || "Product Added to wishlist");
+        queryClient.invalidateQueries({ queryKey: ["wishlist","products"] });
+      } else {
+        toast.error(res.data.message || "Something went wrong");
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+    }
+  }
   return (
     <>
       <div>
@@ -53,22 +85,22 @@ const form = useForm({
         {!response.isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
             {response && response?.data && response?.data?.data?.map((product: any, index: any) => (
-              <Card key={index} >
+              <Card key={index}  className="hover:border hover:border-primary transition-all ">
                 <CardContent onClick={() => {router.push("/product/"+product.id+"")}} className="p-4 group cursor-pointer">
                   <Image
                     width={1000}
                     height={1000}
                     src={product.imageUrl}
                     alt={product.title}
-                    className="w-full group-hover:scale-105 overflow-hidden transition-all duration-200 h-72 max-h-96 object-top object-cover mb-4 rounded-md"
+                    className="w-full group-hover:scale-105 overflow-hidden transition-all  duration-200 h-72 max-h-96 object-top object-cover mb-4 rounded-md"
                   />
                   <h3 className="font-semibold text-lg mb-2">
                     {product.title}
                   </h3>
                   <div className="flex justify-between items-center">
-                    <span className="text-xl font-bold">
-                      ₹ {product?.product_inventory[0]?.price.toFixed(2)}
-                    </span>
+                  <span className="text-lg font-medium  pl-0.5">
+                        {(product.product_inventory[0].price - (product.product_inventory[0].price * product.product_inventory[0].discount)/100)} <span className="ms-3 text-sm line-through text-neutral-500 font-thin">{product.product_inventory[0].price}</span>
+                        </span>
                     {product.isTrending && (
                       <Badge className="bg-red-100 text-red-800">
                         Trending
@@ -77,9 +109,12 @@ const form = useForm({
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
-                    Add to Cart
-                  </Button>
+                  {!user.data?.user ? <LoginDialog variant="outline" text="Add to Wishlist"/>: <>{!wishlistQuery.data?.data?.find((item:any)=>item.productId === product.id) ? <Button className="w-full text-primary hover:text-primary" size={"sm"} variant={"outline"} onClick={()=>{
+                   handleAddWishlist(product.id)
+                  }} >Add to Wishlist</Button> : <Button className="w-full text-primary hover:text-primary" size={"sm"} variant={"outline"} onClick={()=>{
+                    handleRemoveWishlist(product.id)
+                   }} >Remove From Wishlist</Button>}</>}
+                  
                 </CardFooter>
               </Card>
             ))}

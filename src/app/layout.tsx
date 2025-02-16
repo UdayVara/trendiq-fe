@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import NextAuthProvider from "@/Providers/NextAuthProvider/NextAuthProvider";
 import { auth } from "@/auth";
 import ReactQueryProviders from "@/Providers/ReactQueryProvider/ReactProvider";
+import NextTopLoader from 'nextjs-toploader';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,6 +35,7 @@ export default async function RootLayout({
         <div>
           <NextAuthProvider session={session}>
             <ReactQueryProviders>
+            <NextTopLoader  color="#FF0000" height={3} showSpinner={false}/>
               <div>
                 <Toaster  theme="light"/>
               </div>

@@ -32,7 +32,7 @@ function CartContainer({
             Your cart is empty
           </h2>
           <p className="mt-2 text-base text-gray-500">
-            Looks like you haven't added any items to your cart yet.
+            Looks like you haven&lsquo;t added any items to your cart yet.
           </p>
           <div className="mt-8">
             <Button size="lg" className="text-base font-medium">

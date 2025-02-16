@@ -14,14 +14,11 @@ import { UseFormReturn } from "react-hook-form";
 
 function Filters({
   handleFilter,
-  form:{register,setValue,getValues,reset}
+  form:{register,setValue,reset}
 }: {
   handleFilter: (
-    pageNumber: number,
-    search: string,
-    gender: string,
-    category: string
-  ) => Promise<void>;
+    
+  ) => void;
   form:UseFormReturn<{
     search: string;
     gender: string;
@@ -41,7 +38,7 @@ function Filters({
           onChange={(e) => {
             
             setValue("search", e.target.value);
-            handleFilter(1, e.target.value, "all", "all");
+            handleFilter();
           }}
         />
       </div>
@@ -51,7 +48,7 @@ function Filters({
           //   value={filters.gender}
           onValueChange={(value) => {
             setValue("gender", value);
-            handleFilter(1, getValues().search, value, getValues().category);
+            handleFilter();
           }}
         >
           <SelectTrigger className="w-[140px]">
@@ -69,7 +66,7 @@ function Filters({
           {...register("category")}
           onValueChange={(value) => {
             setValue("category", value);
-            handleFilter(1, getValues().search, getValues().gender , value);
+            handleFilter();
           }}
         >
           <SelectTrigger className="w-[140px]">
@@ -86,7 +83,7 @@ function Filters({
           variant="outline"
           onClick={() => {
             reset()
-            handleFilter(1, "", "all", "all");
+            handleFilter();
           }}
           className="bg-white text-red-600 border-red-600 hover:bg-red-50"
         >

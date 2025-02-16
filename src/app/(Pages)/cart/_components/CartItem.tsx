@@ -1,10 +1,9 @@
 "use client";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus, PlusIcon, Trash2 } from "lucide-react";
+import { Minus, PlusIcon, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import axiosInstance from "@/lib/axios";
-import { useRouter } from "next/navigation";
 import FullPageLoader from "@/components/Layout/Loader/FullPageLoader";
 import { useState } from "react";
 import {
