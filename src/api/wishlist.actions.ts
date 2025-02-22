@@ -52,9 +52,9 @@ export const createWishlist = async (productId: string) => {
     };
   }
 };
-export const deleteWishlist = async (productId: string) => {
+export const deleteWishlist = async (wishlistId: string) => {
   try {
-    const res = await axiosInstance.delete(`/wishlist/${productId}`);
+    const res = await axiosInstance.delete(`/wishlist/${wishlistId}`);
     if (res.data.statusCode == 201) {
       return {
         success: true,

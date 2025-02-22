@@ -123,7 +123,7 @@ export default function ProfilePage() {
                   <CardTitle>Wishlist</CardTitle>
                   <CardDescription>View and manage your wishlist</CardDescription>
                 </CardHeader>
-                <CardContent className="bg-white rounded-b-lg">
+                <CardContent className="bg-white rounded-b-lg pt-3">
                   <Wishlist />
                 </CardContent>
               </Card>

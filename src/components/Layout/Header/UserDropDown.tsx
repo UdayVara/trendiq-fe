@@ -30,7 +30,7 @@ function UserDropDown() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem><Link href="/profile">Profile</Link></DropdownMenuItem>
+            <DropdownMenuItem ><Link href="/profile" className="w-full">Profile</Link></DropdownMenuItem>
             <DropdownMenuItem onClick={async() =>{
                 const res = await signOutAction()
 

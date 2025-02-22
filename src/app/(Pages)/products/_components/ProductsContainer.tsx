@@ -10,27 +10,30 @@ import { getProducts } from "@/api/product.actions";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { createWishlist, deleteWishlist, getWishlist } from "@/api/wishlist.actions";
+import { createWishlist, deleteWishlist } from "@/api/wishlist.actions";
 import { useSession } from "next-auth/react";
 import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
 import { toast } from "sonner";
 
-function ProductsContainer({ data,wishlist }: { data: product[] ,wishlist:any[]}) {
+function ProductsContainer({ data }: { data: product[] ,wishlist:any[]}) {
   const queryClient = useQueryClient()
   const user = useSession()
+  const form = useForm({
+      defaultValues: {
+        search: "",
+        gender: "all",
+        category: "all",
+      },
+    })
   const response = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", form.watch("search"),
+      form.watch("gender"),
+      form.watch("category"),],
     queryFn: async () => getProducts(1,form.getValues("search"),form.getValues("gender"),form.getValues("category")),
     initialData:{success:true,message:"",data:data,wishlist:[]},
-    placeholderData:(prevData)=>prevData
+    
   })
-  
-    const wishlistQuery = useQuery({
-      queryKey: ["wishlist"],
-      queryFn: async () => getWishlist(),
-      initialData:{success:true,message:"",data:wishlist},
-      placeholderData:(prevData)=>prevData
-    })
+
   
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -42,21 +45,16 @@ function ProductsContainer({ data,wishlist }: { data: product[] ,wishlist:any[]}
     }, 300); // 300ms debounce
   };
   const router = useRouter()
-const form = useForm({
-    defaultValues: {
-      search: "",
-      gender: "all",
-      category: "all",
-    },
-
-  })
 
   const handleAddWishlist = async (productId: string) => {
     try {
      const res = await createWishlist(productId)
       if (res.success) {
         toast.success(res.data.message || "Product Added to wishlist");
-        queryClient.invalidateQueries({ queryKey: ["wishlist","products"] });
+        queryClient.invalidateQueries({ queryKey: ["products", form.getValues("search"),
+          form.getValues("gender"),
+          form.getValues("category")] ,refetchType:"all"});
+        response.refetch();
       } else {
         toast.error(res.data.message || "Something went wrong");
       }
@@ -69,8 +67,11 @@ const form = useForm({
     try {
      const res = await deleteWishlist(productId)
       if (res.success) {
-        toast.success(res.data.message || "Product Added to wishlist");
-        queryClient.invalidateQueries({ queryKey: ["wishlist","products"] });
+        toast.success(res.data.message || "Product Removed from wishlist");
+        queryClient.invalidateQueries({ queryKey: ["products", form.getValues("search"),
+          form.getValues("gender"),
+          form.getValues("category")],refetchType:"all" });
+        
       } else {
         toast.error(res.data.message || "Something went wrong");
       }
@@ -78,14 +79,15 @@ const form = useForm({
       toast.error(error?.message || "Something went wrong");
     }
   }
+
   return (
     <>
       <div>
         <Filters handleFilter={handleFilter} form={form}/>
         {!response.isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
-            {response && response?.data && response?.data?.data?.map((product: any, index: any) => (
-              <Card key={index}  className="hover:border hover:border-primary transition-all ">
+            {response && response?.data && response?.data?.data?.map((product: any) => (
+              <Card key={product.id}  className="hover:border hover:border-primary transition-all ">
                 <CardContent onClick={() => {router.push("/product/"+product.id+"")}} className="p-4 group cursor-pointer">
                   <Image
                     width={1000}
@@ -109,10 +111,10 @@ const form = useForm({
                   </div>
                 </CardContent>
                 <CardFooter>
-                  {!user.data?.user ? <LoginDialog variant="outline" text="Add to Wishlist"/>: <>{!wishlistQuery.data?.data?.find((item:any)=>item.productId === product.id) ? <Button className="w-full text-primary hover:text-primary" size={"sm"} variant={"outline"} onClick={()=>{
+                  {!user.data?.user ? <LoginDialog variant="outline" text="Add to Wishlist"/>: <>{product?.wishlist?.length === 0 ? <Button className="w-full text-primary hover:text-primary" size={"sm"} variant={"outline"} onClick={()=>{
                    handleAddWishlist(product.id)
                   }} >Add to Wishlist</Button> : <Button className="w-full text-primary hover:text-primary" size={"sm"} variant={"outline"} onClick={()=>{
-                    handleRemoveWishlist(product.id)
+                    handleRemoveWishlist(product?.wishlist?.[0]?.id || "")
                    }} >Remove From Wishlist</Button>}</>}
                   
                 </CardFooter>
