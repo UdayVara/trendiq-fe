@@ -11,8 +11,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         hostname: '**',
-      }
+      },
+      
     ]
+    , unoptimized: true, // Disables Next.js image optimization
+    
   }
 };
 
