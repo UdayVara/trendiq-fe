@@ -2,7 +2,7 @@
 import { deleteWishlist, getWishlist } from "@/api/wishlist.actions"
 import FullPageLoader from "@/components/Layout/Loader/FullPageLoader"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import Image from "next/image"
 import { toast } from "sonner"
