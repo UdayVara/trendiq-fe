@@ -22,7 +22,7 @@ export default function TrendingProducts() {
     queryFn:getTrendingProducts,
     staleTime:60*1000,
   })
- console.log(data)
+ console.log("data : ",data)
 const router = useRouter()
 
   return (
