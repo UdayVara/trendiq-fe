@@ -14,6 +14,7 @@ import { createWishlist, deleteWishlist } from "@/api/wishlist.actions";
 import { useSession } from "next-auth/react";
 import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
 import { toast } from "sonner";
+import PageContainer from "@/components/Layout/PageContainer";
 
 function ProductsContainer({ data }: { data: product[] ,wishlist:any[]}) {
   const queryClient = useQueryClient()
@@ -83,6 +84,7 @@ function ProductsContainer({ data }: { data: product[] ,wishlist:any[]}) {
   return (
     <>
       <div>
+        <PageContainer>
         <Filters handleFilter={handleFilter} form={form}/>
         {!response.isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
@@ -136,6 +138,7 @@ function ProductsContainer({ data }: { data: product[] ,wishlist:any[]}) {
             ))}
           </div>
         )}
+        </PageContainer>
       </div>
     </>
   );

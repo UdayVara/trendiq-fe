@@ -10,19 +10,21 @@ import MyAddresses from "./Address/MyAddresses"
 import Wishlist from "./WishList"
 import Support from "./Support"
 import TermsAndConditions from "./TermsAndConditions"
+import PageContainer from "@/components/Layout/PageContainer"
 
 
 export default function ProfilePage() {
   return (
+    <PageContainer>
     <div className="mb-6 bg-[#fafafa] mt-4">
-      <div className="bg-brand-gradient text-white pb-12 pt-7 px-4 sm:px-6 lg:px-8 mb-6">
+      <div className="bg-brand-gradient text-white pb-12 pt-7 mb-6">
         <div className="container mx-auto">
           <h1 className="text-4xl text-black font-medium">My Profile</h1>
           <p className="mt-2 text-neutral-700">Manage your account settings and preferences</p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-12">
+      <div className="container mx-auto  -mt-12">
         <Tabs defaultValue="info" className="flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-10rem)] items-stretch">
           <Card className="lg:w-64 shrink-0 min-h-full h-full border-none shadow-lg">
             
@@ -154,6 +156,7 @@ export default function ProfilePage() {
         </Tabs>
       </div>
     </div>
+    </PageContainer>
   )
 }
 
