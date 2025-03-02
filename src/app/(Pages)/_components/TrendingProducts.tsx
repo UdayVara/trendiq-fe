@@ -31,7 +31,7 @@ const router = useRouter()
         <h2 className="text-3xl font-bold mb-8 text-center">
           Trending Fashion
         </h2>
-        <div className="w-full md:px-0 px-6">
+        <div className="w-full md:px-0 px-2">
          <Carousel>
             <CarouselContent>
               {!data?.data || data?.data?.length == 0 ? [1,2,3,4,5].map((item)=>
@@ -46,7 +46,7 @@ const router = useRouter()
                   <Card className="" onClick={()=>{
 router.push("/product/"+product.id+"")
                   }}>
-                    <CardContent className="p-4 group">
+                    <CardContent className="md:p-4 p-2 group">
                       <Image
                         width={1000}
                         height={1000}

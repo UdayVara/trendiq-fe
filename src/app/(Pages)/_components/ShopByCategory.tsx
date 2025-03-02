@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
+import PageContainer from '@/components/Layout/PageContainer'
 
 const categories = [
   { name: 'Statement Tees', image: '/placeholder.svg?height=300&width=300', link: '#' },
@@ -15,6 +16,7 @@ export default function ShopByCategory() {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">Shop by Category</h2>
+        <PageContainer>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((category) => (
             <Link key={category.name} href={category.link}>
@@ -33,7 +35,7 @@ export default function ShopByCategory() {
               </Card>
             </Link>
           ))}
-        </div>
+        </div></PageContainer>
       </div>
     </section>
   )

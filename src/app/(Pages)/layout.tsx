@@ -8,9 +8,7 @@ async function layout({ children }: { children: React.ReactNode }) {
     <>
       <div>
         <Header />
-        <PageContainer>
           <div>{children}</div>
-        </PageContainer>
         <div>
           <Footer />
         </div>

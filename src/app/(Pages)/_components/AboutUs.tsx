@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import PageContainer from '@/components/Layout/PageContainer'
 
 export default function AboutUs() {
   const [showFullStory, setShowFullStory] = useState(false)
 
   return (
     <section className="py-16 bg-gradient-to-b from-red-50 to-white">
+      <PageContainer>
+
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold mb-12 text-center text-red-600">About TrendIQ</h2>
         
@@ -104,6 +107,7 @@ export default function AboutUs() {
           </Button>
         </div>
       </div>
+      </PageContainer>
     </section>
   )
 }
