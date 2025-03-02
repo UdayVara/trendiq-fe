@@ -7,12 +7,13 @@ function ImageGallery({ images }: { images: string[] }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
   return (
     <div className="space-y-4">
-      <div className="relative w-full h-full">
+      <div className="relative aspect-square">
         <Image
           src={images[currentImageIndex]}
           alt="Product image"
-          fill
-          className="object-cover object-top rounded-lg"
+          height={1000}
+          width={1000}
+          className="object-cover max-w-full object-top h-full rounded-lg"
         />
         <button
           onClick={() =>
