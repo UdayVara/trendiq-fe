@@ -5,8 +5,8 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_APP_API_URL 
-  ? `${process.env.NEXT_APP_API_URL}/user` 
+  baseURL: process.env.NEXT_PUBLIC_API_URL 
+  ? `${process.env.NEXT_PUBLIC_API_URL}/user` 
   : "https://trendiq-backend.onrender.com/api/v1/user",
 });
 

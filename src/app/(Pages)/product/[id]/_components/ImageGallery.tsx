@@ -7,7 +7,7 @@ function ImageGallery({ images }: { images: string[] }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
   return (
     <div className="space-y-4">
-      <div className="relative aspect-square">
+      <div className="relative w-full h-full">
         <Image
           src={images[currentImageIndex]}
           alt="Product image"
