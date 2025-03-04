@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -12,18 +13,35 @@ import {
 import { getTrendingProducts } from "@/api/product.actions";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 
 
 export default function TrendingProducts() {
-
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
   const {data} = useQuery({
     queryKey:["trending"],
     queryFn:getTrendingProducts,
     staleTime:60*1000,
   })
  console.log("data : ",data)
+ console.log("count : ",count)
 const router = useRouter()
+
+useEffect(() => {
+  if (!api) {
+    return
+  }
+
+  setCount(api.scrollSnapList().length)
+  setCurrent(api.selectedScrollSnap() + 1)
+
+  api.on("select", () => {
+    setCurrent(api.selectedScrollSnap() + 1)
+  })
+}, [api])
 
   return (
     <section className="py-16 bg-white">
@@ -31,17 +49,24 @@ const router = useRouter()
         <h2 className="text-3xl font-bold mb-8 text-center">
           Trending Fashion
         </h2>
-        <div className="w-full md:px-0 px-2">
-         <Carousel>
+        <div className="w-full md:px-0 px-2 ">
+         {(!data?.data || data?.data?.length == 0 ) &&<Carousel >
             <CarouselContent>
-              {!data?.data || data?.data?.length == 0 ? [1,2,3,4,5].map((item)=>
+              {[1,2,3,4,5].map((item)=>
                <CarouselItem key={item} className="lg:basis-1/4 select-none"><div className="animate-pulse " key={item}>
                 <div className="h-96 bg-gray-300 rounded-md mb-4"></div>
                       <div className="h-6 bg-gray-300 rounded mb-2"></div>
                       <div className="h-4 bg-gray-300 rounded"></div>
                       <div className="h-10 bg-gray-300 rounded mt-4"></div>
               </div></CarouselItem>
-              ) :data?.data?.map((product:any,index:any) => (
+              ) }
+            </CarouselContent>
+            <CarouselPrevious className="md:inline-flex hidden"/>
+            <CarouselNext className="md:inline-flex hidden"/>
+          </Carousel>}
+        {  data?.data?.length > 0 && <Carousel  setApi={setApi}>
+            <CarouselContent>
+              {data?.data?.map((product:any,index:any) => (
                 <CarouselItem key={index} className="lg:basis-1/4 select-none md:basis:1/3 sm:basis-1/2">
                   <Card className="" onClick={()=>{
 router.push("/product/"+product.id+"")
@@ -62,7 +87,7 @@ router.push("/product/"+product.id+"")
                           {product?.category?.name}
                         </Badge>
                         <span className="text-lg font-medium  mt-2 pl-0.5">
-                        {(product.product_inventory[0].price - (product.product_inventory[0].price * product.product_inventory[0].discount)/100)} <span className="ms-3 text-sm line-through text-neutral-500 font-thin">{product.product_inventory[0].price}</span>
+                        ₹ {(product.product_inventory[0].price - (product.product_inventory[0].price * product.product_inventory[0].discount)/100)} <span className="ms-3 text-sm line-through text-neutral-500 font-thin">{product.product_inventory[0].price}</span>
                         </span>
                         
                       </div>
@@ -72,9 +97,17 @@ router.push("/product/"+product.id+"")
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+            <CarouselPrevious className="md:inline-flex hidden"/>
+            <CarouselNext className="md:inline-flex hidden"/>
+          </Carousel>}
+          {
+            data?.data?.length > 1 && (
+              <div className="flex md:hidden  items-center justify-center mt-4 gap-4">
+                {Array.from({ length: data?.data?.length > 5 ? 5 : data?.data?.length }).map((_, index) => (
+                    <span onClick={() => {api?.scrollTo(index)}} key={index} className={`w-3 cursor-pointer shrink-0 h-3 rounded-full  ${current == index +1 ? "bg-gray-500" : "bg-gray-200"} `}></span>
+                ))}
+              </div>)
+          }
         </div>
       </div>
     </section>

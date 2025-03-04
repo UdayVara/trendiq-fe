@@ -59,11 +59,11 @@ export default function AboutUs() {
           </div>
         </div>
 
-        <Tabs defaultValue="mission" className="mb-12">
-          <TabsList className="grid highlighted-list w-full grid-cols-3 pt-0">
-            <TabsTrigger className='my-0 ' value="mission">Our Mission</TabsTrigger>
-            <TabsTrigger className='my-0 ' value="sustainability">Sustainability</TabsTrigger>
-            <TabsTrigger className='my-0 ' value="team">Our Team</TabsTrigger>
+        <Tabs defaultValue="mission" className="mb-12 ">
+          <TabsList className="grid  w-full  grid-cols-3 pt-0">
+            <TabsTrigger className='my-0 highlighted-list' value="mission">Our Mission</TabsTrigger>
+            <TabsTrigger className='my-0 highlighted-list' value="sustainability">Sustainability</TabsTrigger>
+            <TabsTrigger className='my-0 highlighted-list' value="team">Our Team</TabsTrigger>
           </TabsList>
           <TabsContent value="mission" className="mt-4">
             <Card>
