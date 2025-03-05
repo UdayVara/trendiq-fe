@@ -103,7 +103,7 @@ function ProductsContainer({ data }: { data: product[] ,wishlist:any[]}) {
                   </h3>
                   <div className="flex justify-between items-center">
                   <span className="text-lg font-medium  pl-0.5">
-                        {(product.product_inventory[0].price - (product.product_inventory[0].price * product.product_inventory[0].discount)/100)} <span className="ms-3 text-sm line-through text-neutral-500 font-thin">{product.product_inventory[0].price}</span>
+                  ₹ {Math.floor(product.product_inventory[0].price - (product.product_inventory[0].price * product.product_inventory[0].discount)/100)} <span className="ms-1 text-sm line-through text-neutral-500 font-thin">{product.product_inventory[0].price}</span>
                         </span>
                     {product.isTrending && (
                       <Badge className="bg-red-100 text-red-800">
@@ -112,7 +112,7 @@ function ProductsContainer({ data }: { data: product[] ,wishlist:any[]}) {
                     )}
                   </div>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="w-full">
                   {!user.data?.user ? <LoginDialog variant="outline" text="Add to Wishlist"/>: <>{product?.wishlist?.length === 0 ? <Button className="w-full text-primary hover:text-primary" size={"sm"} variant={"outline"} onClick={()=>{
                    handleAddWishlist(product.id)
                   }} >Add to Wishlist</Button> : <Button className="w-full text-primary hover:text-primary" size={"sm"} variant={"outline"} onClick={()=>{

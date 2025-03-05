@@ -60,7 +60,7 @@ function Details({ product }: { product: any }) {
   };
   const router = useRouter()
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 col-span-6">
       <div>
         <h1 className="text-3xl font-bold">{product.title} <span className="capitalize">{product.color}</span></h1>
         <h3 className="text-lg text-neutral-600">{product.category.name}</h3>
@@ -165,8 +165,8 @@ function Details({ product }: { product: any }) {
 
       <Tabs defaultValue="description" className="w-full">
         <TabsList  className="grid w-full p-0 grid-cols-2 highlighted-list">
-          <TabsTrigger value="description" className="my-0 duration-500">Description</TabsTrigger>
-          <TabsTrigger value="reviews" className="my-0 duration-500">Reviews</TabsTrigger>
+          <TabsTrigger value="description" className="my-0 duration-500 data-[state=active]:bg-primary data-[state=active]:text-white">Description</TabsTrigger>
+          <TabsTrigger value="reviews" className="my-0 data-[state=active]:bg-primary data-[state=active]:text-white duration-500 ">Reviews</TabsTrigger>
         </TabsList>
         <TabsContent value="description" className="mt-4 duration-500 transition-all">
           <div className="prose prose-sm">

@@ -74,12 +74,12 @@ export default function CartItem({ item }: any) {
               alt={item?.product?.title}
               width={120}
               height={120}
-              className="object-cover object-center rounded-md"
+              className="object-cover lg:h-auto max-h-56 object-center rounded-md"
             />
           </div>
           <div className="ml-4 flex-grow">
            
-            <div className=" flex flex-col sm:flex-row sm:justify-between items-start pr-4 pt-2">
+            <div className=" flex flex-row justify-between items-start pr-4 pt-2">
               <div className="sm:pr-6">
                 <h3 className="text-base sm:text-lg font-medium text-gray-900">
                   <a href="#" className="hover:text-gray-800 flex flex-row items-center">

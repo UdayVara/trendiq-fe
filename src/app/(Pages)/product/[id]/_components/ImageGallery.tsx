@@ -6,7 +6,7 @@ import React, { useState } from "react";
 function ImageGallery({ images }: { images: string[] }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 col-span-5">
       <div className="relative aspect-square">
         <Image
           src={images[currentImageIndex]}

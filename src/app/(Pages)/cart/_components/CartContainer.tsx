@@ -6,6 +6,7 @@ import { getCart } from "@/api/cart.actions";
 import OrderSummary from "./OrderSummary";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 function CartContainer({
   data,
@@ -22,7 +23,7 @@ function CartContainer({
     initialData: data,
     placeholderData:(prevData)=>prevData
   });
-
+  const router = useRouter();
   return (
     <>
       {cartRes.data.data?.length == 0 ? (
@@ -35,7 +36,7 @@ function CartContainer({
             Looks like you haven&lsquo;t added any items to your cart yet.
           </p>
           <div className="mt-8">
-            <Button size="lg" className="text-base font-medium">
+            <Button onClick={() => router.push("/products")} size="lg" className="text-base font-medium">
               Continue Shopping
             </Button>
           </div>

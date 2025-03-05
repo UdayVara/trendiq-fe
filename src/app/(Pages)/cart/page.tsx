@@ -7,7 +7,7 @@ import PageContainer from '@/components/Layout/PageContainer'
 export default async function CartPage() {
   const cartItems = await getCart()
   return (
-    <div className="">
+    <div className="my-8">
       <PageContainer>
 
       <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>

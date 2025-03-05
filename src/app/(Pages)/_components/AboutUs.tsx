@@ -61,9 +61,9 @@ export default function AboutUs() {
 
         <Tabs defaultValue="mission" className="mb-12 ">
           <TabsList className="grid  w-full  grid-cols-3 pt-0">
-            <TabsTrigger className='my-0 highlighted-list' value="mission">Our Mission</TabsTrigger>
-            <TabsTrigger className='my-0 highlighted-list' value="sustainability">Sustainability</TabsTrigger>
-            <TabsTrigger className='my-0 highlighted-list' value="team">Our Team</TabsTrigger>
+            <TabsTrigger className='my-0  data-[state=active]:bg-primary data-[state=active]:text-white' value="mission">Our Mission</TabsTrigger>
+            <TabsTrigger className='my-0  data-[state=active]:bg-primary data-[state=active]:text-white' value="sustainability">Sustainability</TabsTrigger>
+            <TabsTrigger className='my-0  data-[state=active]:bg-primary data-[state=active]:text-white' value="team">Our Team</TabsTrigger>
           </TabsList>
           <TabsContent value="mission" className="mt-4">
             <Card>
