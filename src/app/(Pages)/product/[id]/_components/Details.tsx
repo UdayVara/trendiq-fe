@@ -60,7 +60,7 @@ function Details({ product }: { product: any }) {
   };
   const router = useRouter()
   return (
-    <div className="space-y-6 lg:col-span-6 col-span-12">
+    <div className="space-y-6 lg:col-span-6 col-span-12 md:px-0 px-2">
       <div>
         <h1 className="text-3xl font-bold">{product.title} <span className="capitalize">{product.color}</span></h1>
         <h3 className="text-lg text-neutral-600">{product.category.name}</h3>
