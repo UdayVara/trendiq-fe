@@ -14,6 +14,7 @@ import { getTrendingProducts } from "@/api/product.actions";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 
 
@@ -68,7 +69,7 @@ useEffect(() => {
             <CarouselContent>
               {data?.data?.map((product:any,index:any) => (
                 <CarouselItem key={index} className="lg:basis-1/4 select-none md:basis:1/3 sm:basis-1/2">
-                  <Card className="" onClick={()=>{
+                  <Link href={`/product/${product.id}`} ><Card className="" onClick={()=>{
 router.push("/product/"+product.id+"")
                   }}>
                     <CardContent className="md:p-4 p-2 group">
@@ -93,7 +94,7 @@ router.push("/product/"+product.id+"")
                       </div>
                     </CardContent>
                    
-                  </Card>
+                  </Card></Link>
                 </CarouselItem>
               ))}
             </CarouselContent>

@@ -28,8 +28,8 @@ export default function CartItem({ item }: any) {
     try {
       const res = await axiosInstance.delete(`/cart/${item.id}`);
       if (res.data?.statusCode == 201) {
+        await queryClient.invalidateQueries({ queryKey: ["cart"] });
         toast.success(`Item removed successfully`);
-        queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
         toast.error(res.data.message || "Something went wrong");
       }
@@ -53,8 +53,8 @@ export default function CartItem({ item }: any) {
       });
 
       if (res.data?.statusCode == 201) {
+        await queryClient.invalidateQueries({ queryKey: ["cart"] });
         toast.success(`Item quantity updated successfully`);
-        queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
         toast.error(res.data.message || "Something went wrong");
       }

@@ -1,0 +1,114 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createWishlist, deleteWishlist } from "@/api/wishlist.actions";
+import { useSession } from "next-auth/react";
+import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
+import { toast } from "sonner";
+
+interface ProductCardProps {
+  product: any;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const user = useSession();
+  // Add to Wishlist Mutation
+  const addWishlistMutation = useMutation({
+    mutationFn: createWishlist,
+    onSuccess: async(res) => {
+        await queryClient.invalidateQueries({ queryKey: ["products"] });
+        toast.success(res.data.message || "Product Added to wishlist");
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || "Something went wrong");
+    },
+  });
+
+  // Remove from Wishlist Mutation
+  const removeWishlistMutation = useMutation({
+    mutationFn: deleteWishlist,
+    onSuccess: async(res) => {
+        await queryClient.invalidateQueries({ queryKey: ["products"] });
+        toast.success(res.data.message || "Product Removed from wishlist");
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || "Something went wrong");
+    },
+  });
+
+  return (
+    <Card key={product.id} className="hover:border hover:border-primary transition-all">
+      <CardContent
+        onClick={() => router.push("/product/" + product.id)}
+        className="p-4 group cursor-pointer"
+      >
+        <Image
+          width={1000}
+          height={1000}
+          src={product.imageUrl}
+          alt={product.title}
+          className="w-full group-hover:scale-105 overflow-hidden transition-all duration-200 h-72 max-h-96 object-top object-cover mb-4 rounded-md"
+        />
+        <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-medium pl-0.5">
+            ₹{" "}
+            {Math.floor(
+              product.product_inventory[0].price -
+                (product.product_inventory[0].price * product.product_inventory[0].discount) / 100
+            )}{" "}
+            <span className="ms-1 text-sm line-through text-neutral-500 font-thin">
+              {product.product_inventory[0].price}
+            </span>
+          </span>
+          {product.isTrending && <Badge className="bg-red-100 text-red-800">Trending</Badge>}
+        </div>
+      </CardContent>
+      <CardFooter className="w-full">
+        {!user.data?.user ? (
+          <LoginDialog variant="outline" text="Add to Wishlist" />
+        ) : (
+          <>
+            {product?.wishlist?.length === 0 ? (
+              <Button
+                className="w-full text-primary hover:text-primary"
+                size="sm"
+                variant="outline"
+                onClick={() => addWishlistMutation.mutate(product.id)}
+                disabled={addWishlistMutation.isPending}
+              >
+                {addWishlistMutation.isPending ? 
+                    <div className="flex flex-row items-center gap-2">Add to Wishlist  <div
+                    className="w-4 h-4 border-2 border-dashed rounded-full animate-spin border-primary mx-auto"
+                  ></div></div>
+ : "Add to Wishlist"}
+              </Button>
+            ) : (
+              <Button
+                className="w-full text-primary hover:text-primary"
+                size="sm"
+                variant="outline"
+                onClick={() => removeWishlistMutation.mutate(product?.wishlist?.[0]?.id || "")}
+                disabled={removeWishlistMutation.isPending}
+              >
+                {removeWishlistMutation.isPending ? <div className="flex flex-row items-center gap-2">Remove From Wishlist
+  <div
+    className="w-4 h-4 border-2 border-dashed rounded-full animate-spin border-primary mx-auto"
+  ></div>
+ 
+</div>: "Remove From Wishlist"}
+              </Button>
+            )}
+          </>
+        )}
+      </CardFooter>
+    </Card>
+  );
+};
+
+export default ProductCard;
