@@ -42,21 +42,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   });
 
   return (
-    <Card key={product.id} className="hover:border hover:border-primary transition-all">
+    <Card key={product.id} className={`md:hover:border md:hover:border-primary transition-all relative ${product.isTrending ? "pt-3" : "pt-2"}  pb-0 `}>
+      {product.isTrending && <Badge className="bg-red-100 text-red-800 top-1 right-1 w-min absolute">Trending</Badge>}
       <CardContent
         onClick={() => router.push("/product/" + product.id)}
-        className="p-4 group cursor-pointer"
+        className="p-4 md:px-auto px-2 group cursor-pointer "
       >
+        
         <Image
           width={1000}
           height={1000}
           src={product.imageUrl}
           alt={product.title}
-          className="w-full group-hover:scale-105 overflow-hidden transition-all duration-200 h-72 max-h-96 object-top object-cover mb-4 rounded-md"
+          className="w-full group-hover:md:scale-105 overflow-hidden transition-all duration-200 h-72 md:max-h-96 max-h-44 object-top object-cover md:mb-4 mb-2 rounded-md"
         />
-        <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
+        <h3 className="font-semibold md:text-lg text-base md:mb-2 mb-0">{product.title}</h3>
         <div className="flex justify-between items-center">
-          <span className="text-lg font-medium pl-0.5">
+          <span className="md:text-lg text-sm font-medium pl-0.5">
             ₹{" "}
             {Math.floor(
               product.product_inventory[0].price -
@@ -66,24 +68,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               {product.product_inventory[0].price}
             </span>
           </span>
-          {product.isTrending && <Badge className="bg-red-100 text-red-800">Trending</Badge>}
+          
         </div>
       </CardContent>
-      <CardFooter className="w-full">
+      <CardFooter className="w-full md:p-2 p-1 pb-3">
         {!user.data?.user ? (
           <LoginDialog variant="outline" text="Add to Wishlist" />
         ) : (
           <>
             {product?.wishlist?.length === 0 ? (
               <Button
-                className="w-full text-primary hover:text-primary"
+                className="w-full text-sm text-primary hover:text-primary"
                 size="sm"
                 variant="outline"
                 onClick={() => addWishlistMutation.mutate(product.id)}
                 disabled={addWishlistMutation.isPending}
               >
                 {addWishlistMutation.isPending ? 
-                    <div className="flex flex-row items-center gap-2">Add to Wishlist  <div
+                    <div className="flex text-sm flex-row items-center gap-2">Add to Wishlist  <div
                     className="w-4 h-4 border-2 border-dashed rounded-full animate-spin border-primary mx-auto"
                   ></div></div>
  : "Add to Wishlist"}

@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 function LoginDialog({variant,text}:{variant:"link" | "default" | "destructive" | "outline" | "secondary" | "ghost",text:string}) {
   return (
     <Dialog >
-        <DialogTrigger><Button variant={variant} className='w-full text-primary hover:text-primary'>{text}</Button></DialogTrigger>
+        <DialogTrigger className='w-full'><Button variant={variant} className='w-full text-primary hover:text-primary'>{text}</Button></DialogTrigger>
   <DialogContent>
     <DialogHeader>
       <DialogTitle>Login Required</DialogTitle>

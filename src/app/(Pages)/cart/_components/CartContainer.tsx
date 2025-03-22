@@ -21,7 +21,8 @@ function CartContainer({
     queryKey: [`cart`],
     queryFn: async () => getCart(),
     initialData: data,
-    placeholderData:(prevData)=>prevData
+    placeholderData:(prevData)=>prevData,
+    staleTime:0
   });
   const router = useRouter();
   return (

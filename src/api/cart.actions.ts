@@ -4,7 +4,11 @@ export const getCart = async () => {
     try {
         
    
-  const res = await axiosInstance.get("/cart");
+  const res = await axiosInstance.get("/cart",{
+    headers: {
+      'cache-Control': 'no-store', 
+    },
+  });
 
   if (res.data.statusCode == 200) {
     return {

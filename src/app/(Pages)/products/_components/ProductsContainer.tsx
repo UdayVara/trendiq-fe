@@ -28,7 +28,8 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
     queryFn: async () =>
       getProducts(1, form.getValues("search"), form.getValues("gender"), form.getValues("category")),
     initialData: { success: true, message: "", data: data, wishlist: [] },
-    retryOnMount:false
+    retryOnMount:true,
+    staleTime:30 * 1000
   });
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -45,7 +46,7 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
     <PageContainer>
       <Filters handleFilter={handleFilter} form={form} />
       {!response.isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 gap-3 w-full">
           {response?.data?.data?.map((product: any) => (
             <ProductCard key={product.id} product={product} />
           ))}
