@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   });
 
   return (
-    <Card key={product.id} className={`md:hover:border md:hover:border-primary transition-all relative ${product.isTrending ? "pt-3" : "pt-2"}  pb-0 `}>
+    <Card key={product.id} className={` transition-all relative ${product.isTrending ? "md:pt-5 pt-3" : "pt-2"}  pb-0 `}>
       {product.isTrending && <Badge className="bg-red-100 text-red-800 top-1 right-1 w-min absolute">Trending</Badge>}
       <CardContent
         onClick={() => router.push("/product/" + product.id)}

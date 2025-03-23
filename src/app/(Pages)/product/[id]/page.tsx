@@ -11,7 +11,7 @@ export default async  function ProductPage({params}:any) {
 
       <div className="grid grid-cols-12 gap-8 my-8">
         {/* Image Gallery */}
-        <ImageGallery images={[product.data.data.imageUrl]} />
+        <ImageGallery images={[...product.data.data.product_images]} />
 
         {/* Product Details */}
         <Details product={product.data.data}/>

@@ -63,7 +63,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className=" bg-white  py-12 sm:px-6 lg:px-8">
       {/* Header Section */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-red-600 mx-auto h-12 w-12 rounded-full flex items-center justify-center">
@@ -87,10 +87,10 @@ export default function SignUpPage() {
       </div>
 
       {/* Form Section */}
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <div className="md:mt-8 px-3 mt-3 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white md:py-8 py-4 px-4 shadow sm:rounded-lg sm:px-10">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="md:space-y-6 space-y-4">
               {/* Username */}
               <FormItem>
                 <Label htmlFor="username">Username</Label>

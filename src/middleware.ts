@@ -11,8 +11,19 @@ export const middleware = async (req: NextRequest) => {
     // Allow dynamic route matching (e.g., `/product/123`)
     const isPublic = publicUrls.includes(url) || url.startsWith("/product/");
 
+    const isAuthRoutes = ["/signin", "/signup"].includes(url);
+
+    if(isAuthRoutes){
+        const user = await auth()
+        console.log("user",user)
+        if(user?.user){
+            return NextResponse.redirect(new URL('/', req.url))
+        }
+    }
+
     if(!isPublic){
         const user = await auth()
+        console.log("user",user)
         if(!user?.user){
             return NextResponse.redirect(new URL('/signin', req.url))
         }
