@@ -42,11 +42,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   });
 
   return (
-    <Card key={product.id} className={` transition-all relative ${product.isTrending ? "md:pt-5 pt-3" : "pt-2"}  pb-0 `}>
-      {product.isTrending && <Badge className="bg-red-100 text-red-800 top-1 right-1 w-min absolute">Trending</Badge>}
+    <Card key={product.id} className={` flex flex-col transition-all relative pt-0  pb-0 `}>
+      
       <CardContent
         onClick={() => router.push("/product/" + product.id)}
-        className="p-4 md:px-auto px-2 group cursor-pointer "
+        className="p-4 pt-2 grow md:px-auto px-2 group cursor-pointer "
       >
         
         <Image
@@ -56,9 +56,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           alt={product.title}
           className="w-full group-hover:md:scale-105 overflow-hidden transition-all duration-200 h-72 md:max-h-96 max-h-44 object-top object-cover md:mb-4 mb-2 rounded-md"
         />
-        <h3 className="font-semibold md:text-lg text-base md:mb-2 mb-0">{product.title}</h3>
+        <h3 className="font-semibold md:text-lg capitalize text-sm md:mb-2 mb-0">{product.title}</h3>
         <div className="flex justify-between items-center">
-          <span className="md:text-lg text-sm font-medium pl-0.5">
+          <span className="md:text-lg text-xs font-medium pl-0.5">
             ₹{" "}
             {Math.floor(
               product.product_inventory[0].price -
