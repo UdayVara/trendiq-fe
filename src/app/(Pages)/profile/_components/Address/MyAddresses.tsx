@@ -67,7 +67,7 @@ export default function MyAddresses() {
     <>
       {isLoading  && <FullPageLoader />}
       <Card className="h-full border-none shadow-lg">
-        <CardHeader className="border-b bg-white rounded-t-lg">
+        <CardHeader className="border-b p-0 bg-white rounded-t-lg">
           <div className="flex flex-row items-start justify-between">
             <div>
               <CardTitle>My Addresses</CardTitle>
