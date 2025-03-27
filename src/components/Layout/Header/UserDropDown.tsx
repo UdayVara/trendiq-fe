@@ -10,11 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 function UserDropDown() {
-    const router = useRouter()
   return (
     <>
       <div>
@@ -36,7 +34,7 @@ function UserDropDown() {
 
                 if(res.success){
                     toast.success(res.message)
-                    router.refresh()
+                    window.location.reload()
                 }else{
                     toast.error(res.message)
                 }

@@ -191,7 +191,7 @@ export default function ProfilePage() {
             </div>
           </Tabs>
         </div>
-        <div className={` container border-t-2 border-t-gray-400  mx-auto  -mt-10 pt-4`}>
+        <div className={` container border-t-2 lg:hidden block border-t-gray-400  mx-auto  -mt-10 pt-4`}>
           <Tabs
             defaultValue="info"
             className={`flex flex-col lg:flex-row ${
@@ -269,39 +269,39 @@ export default function ProfilePage() {
               </CardContent>
             </Card>
             <div className="flex-grow h-full mt-4">
-              <TabsContent value="info" className="h-full mt-0">
-                <Card className="h-full p-0 border-none shadow-lg">
-                  <CardHeader className="border-b p-0 bg-white rounded-t-lg">
+              <TabsContent value="info" className="h-full bg-transparent mt-0">
+                <Card className="h-full p-0 bg-transparent border-none shadow-lg">
+                  <CardHeader className=" p-0 bg-transparent rounded-t-lg">
                     <CardTitle>User Information</CardTitle>
                     <CardDescription>
                       View your personal information
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="bg-white rounded-b-lg">
+                  <CardContent className="bg-transparent pt-2 rounded-b-lg">
                     <UserInfo />
                   </CardContent>
                 </Card>
               </TabsContent>
               <TabsContent value="update" className="h-full mt-0">
-                <Card className="h-full border-none shadow-lg">
-                  <CardHeader className="border-b p-0 bg-white rounded-t-lg">
+                <Card className="h-full border-none bg-transparent shadow-lg">
+                  <CardHeader className=" p-0 bg-transparent rounded-t-lg">
                     <CardTitle>Update Profile</CardTitle>
                     <CardDescription>
                       Modify your personal information
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="bg-white rounded-b-lg">
+                  <CardContent className="bg-transparent rounded-b-lg">
                     <UpdateProfile />
                   </CardContent>
                 </Card>
               </TabsContent>
               <TabsContent value="orders" className="h-full mt-0">
-                <Card className="h-full border-none shadow-lg">
-                  <CardHeader className="border-b p-0 bg-white rounded-t-lg">
+                <Card className="h-full border-none bg-transparent shadow-lg">
+                  <CardHeader className=" p-0 bg-transparent rounded-t-lg">
                     <CardTitle>My Orders</CardTitle>
                     <CardDescription>View your order history</CardDescription>
                   </CardHeader>
-                  <CardContent className="bg-white p-0 rounded-b-lg">
+                  <CardContent className="bg-transparent p-0 rounded-b-lg">
                     <MyOrders />
                   </CardContent>
                 </Card>
@@ -310,38 +310,38 @@ export default function ProfilePage() {
                 <MyAddresses />
               </TabsContent>
               <TabsContent value="wishlist" className="h-full mt-0">
-                <Card className="h-full border-none shadow-lg">
-                  <CardHeader className="border-b p-0 bg-white rounded-t-lg">
+                <Card className="h-full bg-transparent border-none shadow-lg">
+                  <CardHeader className=" p-0 bg-transparent rounded-t-lg">
                     <CardTitle>Wishlist</CardTitle>
                     <CardDescription>
                       View and manage your wishlist
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="bg-white rounded-b-lg pt-3">
+                  <CardContent className="bg-transparent rounded-b-lg pt-3">
                     <Wishlist />
                   </CardContent>
                 </Card>
               </TabsContent>
               <TabsContent value="support" className="h-full mt-0">
-                <Card className="h-full border-none shadow-lg">
-                  <CardHeader className="border-b p-0 bg-white rounded-t-lg">
+                <Card className="h-full bg-transparent border-none shadow-lg">
+                  <CardHeader className=" p-0 bg-transparent rounded-t-lg">
                     <CardTitle>Support</CardTitle>
                     <CardDescription>Get help and support</CardDescription>
                   </CardHeader>
-                  <CardContent className="bg-white rounded-b-lg">
+                  <CardContent className="bg-transparent rounded-b-lg">
                     <Support />
                   </CardContent>
                 </Card>
               </TabsContent>
               <TabsContent value="terms" className="h-full mt-0">
-                <Card className="h-full border-none shadow-lg">
-                  <CardHeader className="border-b p-0 bg-white rounded-t-lg">
+                <Card className="h-full bg-transparent border-none shadow-lg">
+                  <CardHeader className=" p-0 bg-transparent rounded-t-lg">
                     <CardTitle>Terms and Conditions</CardTitle>
                     <CardDescription>
                       Read our terms and conditions
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="bg-white rounded-b-lg">
+                  <CardContent className="bg-transparent rounded-b-lg">
                     <TermsAndConditions />
                   </CardContent>
                 </Card>

@@ -1,10 +1,12 @@
 "use client";
+import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axiosInstance from "@/lib/axios";
 import { Star } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -14,6 +16,7 @@ function Details({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState(
     product.product_inventory[0].size.id
   );
+  const user = useSession()
   const [selectedVariant, setSelectedVariant] = useState(
     product.product_inventory[0]
   );
@@ -159,9 +162,9 @@ function Details({ product }: { product: any }) {
           <h4 className="text-green-600  text-lg font-semibold">In Stock</h4>
         )
       )}
-      <Button size="lg" variant={'outline'} className="w-full text-primary" onClick={addProductToCart}>
+      {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ?  <Button size="lg" variant={'outline'} className="w-full text-primary" onClick={addProductToCart}>
         Add to Cart
-      </Button>
+      </Button> : <LoginDialog variant="outline" text="Add to Cart"/>}
 
       <Tabs defaultValue="description" className="w-full">
         <TabsList  className="grid w-full p-0 grid-cols-2 highlighted-list">

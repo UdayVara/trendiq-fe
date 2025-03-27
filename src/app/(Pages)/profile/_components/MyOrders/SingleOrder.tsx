@@ -17,7 +17,7 @@ function SingleOrder({
 }) {
   console.log("Order", order);
   return (
-    <div className="">
+    <div className="pb-2">
       <div className="mb-6 mt-4">
         <div className="flex items-center gap-2 mb-4">
           <h4
@@ -96,7 +96,7 @@ function SingleOrder({
               </div>
               <div className="flex-grow">
                 <h4 className="font-medium">{item?.title}</h4>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
+                <div className="grid w-max grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
                   <p className="text-muted-foreground">Color:</p>
                   <p>{item?.color}</p>
                   <p className="text-muted-foreground">Size:</p>
@@ -148,7 +148,7 @@ function SingleOrder({
         </div>
       </div>
 
-      <div className="mt-8 mb-6 flex justify-end gap-3">
+      <div className="mt-8 mb-8 flex justify-end gap-3">
         <Button variant="outline">Need Help?</Button>
         <Button>Track Order</Button>
       </div>
