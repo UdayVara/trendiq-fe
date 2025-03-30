@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getCookie } from "@/lib/cookie";
 
 
 
@@ -22,9 +23,10 @@ export default function TrendingProducts() {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+
   const {data} = useQuery({
-    queryKey:["trending"],
-    queryFn:getTrendingProducts,
+    queryKey:["trending",getCookie("gender")],
+    queryFn:() => getTrendingProducts(getCookie("gender") as "male" | "female"),
     staleTime:60*1000,
   })
  console.log("data : ",data)
@@ -68,7 +70,7 @@ useEffect(() => {
         {  data?.data?.length > 0 && <Carousel  setApi={setApi}>
             <CarouselContent>
               {data?.data?.map((product:any,index:any) => (
-                <CarouselItem key={index} className="lg:basis-1/4 select-none md:basis:1/3 sm:basis-1/2">
+                <CarouselItem key={index} className="lg:basis-1/4 select-none md:basis-1/3  sm:basis-1/2">
                   <Link href={`/product/${product.id}`} ><Card className="" onClick={()=>{
 router.push("/product/"+product.id+"")
                   }}>
@@ -78,7 +80,7 @@ router.push("/product/"+product.id+"")
                         height={1000}
                         src={product.imageUrl}
                         alt={product.title}
-                        className="w-full group-hover:scale-105 duration-300 cursor-pointer h-96 max-h-96 object-top object-cover mb-4 rounded-md"
+                        className="w-full group-hover:scale-105 duration-300 cursor-pointer h-96 lg:max-h-96 max-h-80 object-top object-cover mb-4 rounded-md"
                       />
                       <h3 className="font-semibold text-lg mb-1">
                         {product.title}

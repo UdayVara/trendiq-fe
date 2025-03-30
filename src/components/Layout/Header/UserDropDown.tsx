@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "lucide-react";
+import { User, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -27,8 +27,8 @@ function UserDropDown() {
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-
-            <DropdownMenuItem ><Link href="/profile" className="w-full">Profile</Link></DropdownMenuItem>
+            <Link href="/cart"><DropdownMenuItem > <UserPlus className='w-5 h-5 mr-2'/>Cart</DropdownMenuItem></Link>
+            <Link href="/cart"><DropdownMenuItem > <UserPlus className='w-5 h-5 mr-2'/>Profile</DropdownMenuItem></Link>
             <DropdownMenuItem onClick={async() =>{
                 const res = await signOutAction()
 

@@ -21,7 +21,6 @@ function Filters({
   ) => void;
   form:UseFormReturn<{
     search: string;
-    gender: string;
     category: string;
 }, any, undefined>
 }) {
@@ -43,24 +42,7 @@ function Filters({
         />
       </div>
       <div className="flex gap-4 w-full md:w-auto">
-        <Select
-        {...register("gender")}
-          //   value={filters.gender}
-          onValueChange={(value) => {
-            setValue("gender", value);
-            handleFilter();
-          }}
-        >
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Gender" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Genders</SelectItem>
-            <SelectItem value="male">Men</SelectItem>
-            <SelectItem value="female">Women</SelectItem>
-            <SelectItem value="unisex">Unisex</SelectItem>
-          </SelectContent>
-        </Select>
+       
         <Select
           //   value={filters.category}
           {...register("category")}

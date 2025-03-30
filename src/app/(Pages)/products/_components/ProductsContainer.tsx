@@ -7,13 +7,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import PageContainer from "@/components/Layout/PageContainer";
 import ProductCard from "./ProductItem";
+import { getCookie } from "@/lib/cookie";
 
 function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
   const queryClient = useQueryClient();
   const form = useForm({
     defaultValues: {
       search: "",
-      gender: "all",
       category: "all",
     },
   });
@@ -22,11 +22,11 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
     queryKey: [
       "products",
       form.watch("search"),
-      form.watch("gender"),
+      getCookie("gender") || "male",
       form.watch("category"),
     ],
     queryFn: async () =>
-      getProducts(1, form.getValues("search"), form.getValues("gender"), form.getValues("category")),
+      getProducts(1, form.getValues("search"),getCookie("gender") || "male",form.getValues("category")),
     initialData: { success: true, message: "", data: data, wishlist: [] },
     retryOnMount:true,
     staleTime:30 * 1000
@@ -42,10 +42,11 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
     }, 300); // 300ms debounce
   };
 
+
   return (
     <PageContainer>
       <Filters handleFilter={handleFilter} form={form} />
-      {!response.isLoading ? (
+      {!response.isLoading || !response.isFetching || !response.isRefetching||  response?.data?.data?.length != 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 gap-3 w-full">
           {response?.data?.data?.map((product: any) => (
             <ProductCard key={product.id} product={product} />
