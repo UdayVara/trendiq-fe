@@ -30,19 +30,21 @@ export const getTrendingProducts = async (gender:"male"|"female") => {
     const res = await axiosInstance.get("/product/trending/home?gender="+gender);
     console.log("response",res)
     if (res.data.statusCode == 200) {
-      return { success: true, data: res.data?.data || [], message: res.data.message };
+      return { success: true, data: res.data?.data || [], message: res.data.message,banner:res?.data?.banner || [] };
     } else {
       return {
         success: false,
         message: res.data.message || "Internal Server Error",
-        data:[]
+        data:[],
+        banner:[]
       };
     }
   } catch (error: any) {
     return {
       success: false,
       message: error.message || "Internal Server Error",
-      data:[]
+      data:[],
+      banner:[]
     };
   }
 };
