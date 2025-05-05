@@ -1,8 +1,8 @@
 import axiosInstance from "@/lib/axios";
 
-export const getCategories = async () => {
+export const getCategories = async (gender:string) => {
   try {
-    const res = await axiosInstance.get(`/category`);
+    const res = await axiosInstance.get(`/category?gender=${gender}`);
     if (res.data.statusCode == 200) {
       return {
         success: true,

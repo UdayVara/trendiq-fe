@@ -54,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           height={1000}
           src={product.imageUrl}
           alt={product.title}
-          className="w-full group-hover:md:scale-105 overflow-hidden transition-all duration-200 h-72 md:max-h-96 max-h-44 object-top object-cover md:mb-4 mb-2 rounded-md"
+          className="w-full group-hover:md:scale-105 overflow-hidden transition-all duration-200 h-full md:max-h-96 max-h-64 object-top object-cover md:mb-4 mb-2 rounded-md"
         />
         <h3 className="font-semibold md:text-lg capitalize text-sm md:mb-2 mb-0">{product.title}</h3>
         <div className="flex justify-between items-center">

@@ -2,12 +2,14 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import PageContainer from '@/components/Layout/PageContainer'
 import { getCategories } from '@/api/category.actions';
+import { cookies } from 'next/headers';
 
 
 
 export default async function ShopByCategory() {
-  
-  const res = await getCategories();  
+  const gender =  (await cookies()).get("gender")?.value || "male";
+  console.log("gender : ",gender)
+  const res = await getCategories(gender);  
   console.log("res : ",res)
   return (
     <section className="py-16 bg-gray-50">

@@ -78,7 +78,7 @@ input[type=number] {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground max-w-[100vw] overflow-x-hidden;
+    @apply bg-background text-foreground max-w-[100vw] overflow-x-hidden scroll-smooth;
   }
 }
 
