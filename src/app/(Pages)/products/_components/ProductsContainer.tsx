@@ -1,6 +1,6 @@
 "use client";
 import { product } from "@/types/product";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Filters from "./Filters";
 import { getProducts } from "@/api/product.actions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -28,8 +28,8 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
     queryFn: async () =>
       getProducts(1, form.getValues("search"),getCookie("gender") || "male",form.getValues("category")),
     initialData: { success: true, message: "", data: data, wishlist: [] },
-    retryOnMount:true,
-    staleTime:30 * 1000
+    staleTime:60 * 1000 ,
+    
   });
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -38,15 +38,21 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     timeoutRef.current = setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["products", form.getValues("search"), getCookie("gender") || "male", form.getValues("category")] }); // Invalidate the query with the new search value.search, gender, current.category] });
     }, 300); // 300ms debounce
   };
 
+  useEffect(()=>{
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get("category")){
+      form.setValue("category",urlParams.get("category") || "all")
+    }
+  },[])
 
   return (
     <PageContainer>
       <Filters handleFilter={handleFilter} form={form} />
-      {!response.isLoading || !response.isFetching || !response.isRefetching||  response?.data?.data?.length != 0 ? (
+      {!response.isLoading || !response.isFetching || !response.isRefetching ||  response?.data?.data?.length != 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 gap-3 w-full">
           {response?.data?.data?.map((product: any) => (
             <ProductCard key={product.id} product={product} />

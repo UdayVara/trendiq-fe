@@ -15,7 +15,6 @@ export const middleware = async (req: NextRequest) => {
 
     if(isAuthRoutes){
         const user = await auth()
-        console.log("user",user)
         if(user?.user){
             return NextResponse.redirect(new URL('/', req.url))
         }
@@ -23,7 +22,6 @@ export const middleware = async (req: NextRequest) => {
 
     if(!isPublic){
         const user = await auth()
-        console.log("user",user)
         if(!user?.user){
             return NextResponse.redirect(new URL('/signin', req.url))
         }

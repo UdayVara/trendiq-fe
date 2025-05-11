@@ -28,7 +28,6 @@ export const getProducts = async (page = 1,search?:string | null,gender?:string,
 export const getTrendingProducts = async (gender:"male"|"female") => {
   try {
     const res = await axiosInstance.get("/product/trending/home?gender="+gender);
-    console.log("response",res)
     if (res.data.statusCode == 200) {
       return { success: true, data: res.data?.data || [], message: res.data.message,banner:res?.data?.banner || [] };
     } else {

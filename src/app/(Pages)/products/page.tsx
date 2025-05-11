@@ -9,10 +9,17 @@ import { cookies} from "next/headers";
 const PageContainer = React.lazy(() => import("@/components/Layout/PageContainer"));
 
 
-export default async function ProductListing() {
+export default async function ProductListing({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const user = await auth()
   const cookieStore = await cookies()
-  const data = await axiosInstance.get(`/product?page=1&size=12&userEmail=${user?.user?.email}&gender=${cookieStore.get("gender")?.value}`);
+  const params = await searchParams
+  const categoryQuery = params.category;
+  console.log("Category Query", categoryQuery);
+  const data = await axiosInstance.get(`/product?page=1&size=12&userEmail=${user?.user?.email}&gender=${cookieStore.get("gender")?.value || "male"}&categoryId=${categoryQuery || ""}`);
   return (
     <div className="min-h-screen bg-background">
       <PageContainer>

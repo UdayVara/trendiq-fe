@@ -22,15 +22,12 @@ import { getCookie } from "@/lib/cookie";
 export default function TrendingProducts() {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0)
 
   const {data} = useQuery({
     queryKey:["trending",getCookie("gender")],
     queryFn:() => getTrendingProducts(getCookie("gender") as "male" | "female"),
     staleTime:60*1000,
   })
- console.log("data : ",data)
- console.log("count : ",count)
 const router = useRouter()
 
 useEffect(() => {
@@ -38,7 +35,6 @@ useEffect(() => {
     return
   }
 
-  setCount(api.scrollSnapList().length)
   setCurrent(api.selectedScrollSnap() + 1)
 
   api.on("select", () => {

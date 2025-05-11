@@ -8,9 +8,7 @@ import { cookies } from 'next/headers';
 
 export default async function ShopByCategory() {
   const gender =  (await cookies()).get("gender")?.value || "male";
-  console.log("gender : ",gender)
   const res = await getCategories(gender);  
-  console.log("res : ",res)
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -18,7 +16,7 @@ export default async function ShopByCategory() {
         <PageContainer>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {res.data.map((category:any) => (
-            <Link key={category.name} href={"/products"}>
+            <Link key={category.name} href={`/products?category=${category?.id}`}>
               <Card className="hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-4">
                   <div className="aspect-square object-top relative mb-2">

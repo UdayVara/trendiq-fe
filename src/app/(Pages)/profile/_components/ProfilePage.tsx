@@ -26,10 +26,35 @@ import Wishlist from "./WishList";
 import Support from "./Support";
 import TermsAndConditions from "./TermsAndConditions";
 import PageContainer from "@/components/Layout/PageContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
   const [isOpen, setOpen] = useState(false);
+  const [tab, setTab] = useState("info")
+  const availableTabs = ["info","update", "addresses", "orders", "wishlist", "support", "terms"]
+  useEffect(()=>{
+    const params = new URLSearchParams(window.location.search)
+
+    if(!params.get("tab")){
+      window.history.pushState("", "", `${window.location.pathname}?tab=info`)
+      setTab("info")
+    }else{
+      if(!availableTabs.includes(params.get("tab") || "")){
+        window.history.pushState("", "", `${window.location.pathname}?tab=info`)
+        setTab("info")
+      }else{
+        window.history.pushState("", "", `${window.location.pathname}?tab=${params.get("tab")}`)
+        setTab(params.get("tab") || "info")
+      }
+    }
+  },[])
+
+  const updateTab = (tab : string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", tab);
+    window.history.replaceState(null, "", url.toString());
+    setTab(tab)
+  }
   return (
     <PageContainer>
       <div className="mb-6 pb-20  bg-[#fafafa] mt-4">
@@ -54,6 +79,7 @@ export default function ProfilePage() {
           <Tabs
             defaultValue="info"
             className="flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-10rem)] items-stretch"
+            value={tab || "info"}
           >
             <Card className="lg:w-64 shrink-0 min-h-full h-full border-none shadow-lg">
               <CardContent className="p-0 flex-grow min-h-full h-full bg-white rounded-b-lg">
@@ -61,6 +87,7 @@ export default function ProfilePage() {
                   <TabsTrigger
                     value="info"
                     className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={()=>{updateTab("info")}}
                   >
                     <UserCircle className="h-5 w-5 mr-2" />
                     Info
@@ -68,13 +95,15 @@ export default function ProfilePage() {
                   <TabsTrigger
                     value="update"
                     className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={()=>{updateTab("update")}}
                   >
                     <Settings className="h-5 w-5 mr-2" />
-                    Update Profile
+                    Update Password
                   </TabsTrigger>
                   <TabsTrigger
                     value="orders"
                     className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={()=>{updateTab("orders")}}
                   >
                     <ShoppingBag className="h-5 w-5 mr-2" />
                     My Orders
@@ -82,6 +111,7 @@ export default function ProfilePage() {
                   <TabsTrigger
                     value="addresses"
                     className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={()=>{updateTab("addresses")}}
                   >
                     <MapPin className="h-5 w-5 mr-2" />
                     My Addresses
@@ -89,6 +119,7 @@ export default function ProfilePage() {
                   <TabsTrigger
                     value="wishlist"
                     className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={()=>{updateTab("wishlist")}}
                   >
                     <Heart className="h-5 w-5 mr-2" />
                     Wishlist
@@ -96,6 +127,7 @@ export default function ProfilePage() {
                   <TabsTrigger
                     value="support"
                     className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={()=>{updateTab("support")}}
                   >
                     <LifeBuoy className="h-5 w-5 mr-2" />
                     Support
@@ -103,6 +135,7 @@ export default function ProfilePage() {
                   <TabsTrigger
                     value="terms"
                     className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={()=>{updateTab("terms")}}
                   >
                     <FileText className="h-5 w-5 mr-2" />
                     Terms
@@ -127,9 +160,9 @@ export default function ProfilePage() {
               <TabsContent value="update" className="h-full mt-0">
                 <Card className="h-full border-none shadow-lg">
                   <CardHeader className="border-b bg-white rounded-t-lg">
-                    <CardTitle>Update Profile</CardTitle>
+                    <CardTitle>Update Password</CardTitle>
                     <CardDescription>
-                      Modify your personal information
+                      Change your password
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="bg-white rounded-b-lg">

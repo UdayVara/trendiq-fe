@@ -12,7 +12,7 @@ import { getCookie } from "@/lib/cookie";
 import { getTrendingProducts } from "@/api/product.actions";
 
 export default function Hero() {
-  const { data } = useQuery({
+  const { data,isLoading } = useQuery({
     queryKey: ["trending", getCookie("gender")],
     queryFn: () =>
       getTrendingProducts((getCookie("gender") as "male" | "female") || "male"),
@@ -58,7 +58,7 @@ export default function Hero() {
               </CarouselItem>
             ))}
 
-          {[1, 2, 3, 4, 5]?.map((_, index) => {
+          {isLoading && [1, 2, 3, 4, ]?.map((_, index) => {
             return <CarouselItem className="relative w-full  bg-gray-300 animate-pulse overflow-hidden h-[65vh]" key={index}>
              
              </CarouselItem >

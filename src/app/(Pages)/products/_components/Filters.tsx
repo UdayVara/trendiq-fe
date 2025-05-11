@@ -1,4 +1,5 @@
 "use client";
+import { getCategories } from "@/api/category.actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getCookie } from "@/lib/cookie";
+import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -24,7 +27,9 @@ function Filters({
     category: string;
 }, any, undefined>
 }) {
-  
+  const gender = getCookie("gender") || "male";
+  const {data,isLoading} = useQuery({queryKey:["categories"],queryFn:() => getCategories(gender),staleTime:2*60*60*1000})
+
   
   return (
     <div className="flex flex-col md:flex-row gap-4 items-center mb-8">
@@ -56,9 +61,9 @@ function Filters({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="T-Shirts">T-Shirts</SelectItem>
-            <SelectItem value="Hoodies">Hoodies</SelectItem>
-            <SelectItem value="Jeans">Jeans</SelectItem>
+           {
+            isLoading ? <SelectItem value="loading">Loading...</SelectItem> : data?.data && data?.data?.length > 0 && data?.data?.map((item: any) => <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>)
+           }
           </SelectContent>
         </Select>
         <Button
