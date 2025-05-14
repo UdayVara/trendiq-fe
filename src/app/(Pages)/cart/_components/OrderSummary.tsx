@@ -1,6 +1,8 @@
 import CheckoutDialog from "@/components/Layout/Dialogs/CheckoutDialog";
 import { Button } from "@/components/ui/button";
+import axiosInstance from "@/lib/axios";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function OrderSummary({ cartItems }: any) {
   const subtotal = cartItems.reduce(
@@ -21,6 +23,20 @@ export default function OrderSummary({ cartItems }: any) {
   const gst = Math.floor((subtotal - discount) * 0.18);
   const total = subtotal - discount + 100;
   const [open, setOpen] = useState(false);
+
+  const handleGetCheckoutLink = async() =>{
+    try {
+      const res = await axiosInstance.post("/stripe/create-payment-intent")
+
+      if(res.data?.statusCode == 200){
+        window.open(res.data.url, "_blank")
+      }else{
+        toast.error(res.data.message || "Failed to Crate Session")
+      }
+    } catch (error:any) {
+      toast.error(error?.message || "Something went wrong")
+    }
+  }
   return (
     <div className="space-y-6">
       <div className="pl-2">
@@ -79,7 +95,7 @@ export default function OrderSummary({ cartItems }: any) {
           <Button
             className="w-full"
             onClick={() => {
-              setOpen(true);
+              handleGetCheckoutLink();
             }}
           >
             Proceed to Checkout

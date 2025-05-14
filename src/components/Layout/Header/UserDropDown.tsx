@@ -28,7 +28,7 @@ function UserDropDown() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <Link href="/cart"><DropdownMenuItem > <ShoppingCart className='w-5 h-5 mr-2' /> Cart</DropdownMenuItem></Link>
-            <Link href="/profile"><DropdownMenuItem > <UserPlus className='w-5 h-5 mr-2'/>Profile</DropdownMenuItem></Link>
+            <Link href="/profile?tab=info"><DropdownMenuItem > <UserPlus className='w-5 h-5 mr-2'/>Profile</DropdownMenuItem></Link>
             <DropdownMenuItem onClick={async() =>{
                 const res = await signOutAction()
 

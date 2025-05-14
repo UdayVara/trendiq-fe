@@ -12,7 +12,7 @@ const PageContainer = React.lazy(() => import("@/components/Layout/PageContainer
 export default async function ProductListing({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: any
 }) {
   const user = await auth()
   const cookieStore = await cookies()

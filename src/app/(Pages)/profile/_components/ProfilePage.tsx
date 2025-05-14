@@ -36,14 +36,14 @@ export default function ProfilePage() {
     const params = new URLSearchParams(window.location.search)
 
     if(!params.get("tab")){
-      window.history.pushState("", "", `${window.location.pathname}?tab=info`)
+      window.history.pushState({}, "", `${window.location.pathname}?tab=info`)
       setTab("info")
     }else{
       if(!availableTabs.includes(params.get("tab") || "")){
-        window.history.pushState("", "", `${window.location.pathname}?tab=info`)
+        window.history.pushState({}, "", `${window.location.pathname}?tab=info`)
         setTab("info")
       }else{
-        window.history.pushState("", "", `${window.location.pathname}?tab=${params.get("tab")}`)
+        window.history.pushState({}, "", `${window.location.pathname}?tab=${params.get("tab")}`)
         setTab(params.get("tab") || "info")
       }
     }

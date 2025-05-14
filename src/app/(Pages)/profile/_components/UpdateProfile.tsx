@@ -53,7 +53,7 @@ export default function UpdateProfile() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
-        <div className="md:grid grid-cols-2 flex flex-col gap-y-4">
+        <div className="md:grid grid-cols-2 flex flex-col gap-y-4 gap-x-4">
           <FormField
             control={form.control}
             name="currentPassword"
