@@ -15,6 +15,7 @@ function CartContainer({
     success: boolean;
     data: any;
     message: any;
+    addresses:any
   };
 }) {
   const cartRes = useQuery({
@@ -54,7 +55,7 @@ function CartContainer({
               ))}
             </ul>
           </section>
-          <OrderSummary cartItems={cartRes?.data?.data} />
+          <OrderSummary cartItems={cartRes?.data?.data} addresses={cartRes?.data?.addresses}/>
         </div>
       )}
     </>

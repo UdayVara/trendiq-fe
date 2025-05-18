@@ -14,19 +14,22 @@ export const getCart = async () => {
     return {
       success: true,
       data: res.data?.data || [],
+      addresses:res.data?.addresses || [],
       message: res.data.message,
     };
   } else {
     return {
       success: false,
       message: res.data.message || "Internal Server Error",
+      addresses:[],
       data: [],
     };
   } } catch (error: any) {
         return {
             success: false,
             message: error?.message || "Internal Server Error",
-            data: []
+            data: [],
+            addresses:[]
         }
   }
 };

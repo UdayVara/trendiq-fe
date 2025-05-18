@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
 
-function CheckoutDialog({setOpen}:{setOpen:Dispatch<SetStateAction<boolean>>}) {
+function CheckoutDialog({setOpen,addressId}:{setOpen:Dispatch<SetStateAction<boolean>>,addressId:string}) {
   const dialogTriggerRef = React.useRef<HTMLButtonElement>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loading,setLoading] = useState(false);
@@ -55,7 +55,7 @@ function CheckoutDialog({setOpen}:{setOpen:Dispatch<SetStateAction<boolean>>}) {
 
         {clientSecret ? (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <PaymentForm loading={loading} setLoading={setLoading} dialogTriggerRef={dialogTriggerRef} clientSecret={clientSecret} />
+            <PaymentForm addressId={addressId} loading={loading} setLoading={setLoading} dialogTriggerRef={dialogTriggerRef} clientSecret={clientSecret} />
           </Elements>
         ) : (
           <p>Loading payment details...</p>
@@ -65,7 +65,7 @@ function CheckoutDialog({setOpen}:{setOpen:Dispatch<SetStateAction<boolean>>}) {
   );
 }
 
-function PaymentForm({ dialogTriggerRef, clientSecret ,loading,setLoading}: { dialogTriggerRef: React.RefObject<HTMLButtonElement | null>; clientSecret: string ,setLoading: React.Dispatch<React.SetStateAction<boolean>>,loading:boolean}) {
+function PaymentForm({ dialogTriggerRef, clientSecret ,loading,setLoading,addressId}: { dialogTriggerRef: React.RefObject<HTMLButtonElement | null>; clientSecret: string ,setLoading: React.Dispatch<React.SetStateAction<boolean>>,loading:boolean,addressId:string}) {
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
@@ -96,7 +96,7 @@ function PaymentForm({ dialogTriggerRef, clientSecret ,loading,setLoading}: { di
     } else if (paymentIntent?.status === "succeeded") {
       const completeOrder = await axiosInstance.post("/stripe/complete-payment",{
         intentId:paymentIntent?.id,
-        shippingId:"cd9ee255-8aad-4b98-afcd-79328f48039e"
+        shippingId:addressId
       });
       if(completeOrder.data.statusCode == 201){
         toast.success("Payment Successful!");

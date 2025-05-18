@@ -124,8 +124,7 @@ export default function MyAddresses() {
                     <CardTitle className="text-xl">{address.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="pt-1">
-                    <p>{address.address}</p>
-                    Gujrat, Ahmedabad 380054
+                    <p>{address.address}</p>  
                   </CardContent>
                   <CardFooter className="flex justify-between">
                     <Button

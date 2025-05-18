@@ -6,6 +6,8 @@ import PageContainer from '@/components/Layout/PageContainer'
 
 export default async function CartPage() {
   const cartItems = await getCart()
+  console.log('cartItems: ', cartItems);
+  
   return (
     <div className="my-8">
       <PageContainer>

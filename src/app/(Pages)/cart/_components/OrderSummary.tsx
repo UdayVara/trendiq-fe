@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import axiosInstance from "@/lib/axios";
 import { useState } from "react";
 import { toast } from "sonner";
+import { AddressSelectorDialog } from "./AddressDialog";
 
-export default function OrderSummary({ cartItems }: any) {
+export default function OrderSummary({ cartItems,addresses }: any) {
+  const [defaultAddress,setDefaultAddress] = useState(addresses.find((address: any) => address.isDefault));
+  const [loading,setLoading] = useState(false);
   const subtotal = cartItems.reduce(
     (total: any, item: any) =>
       total + item?.product_inventory?.price * item.quantity,
@@ -23,12 +26,16 @@ export default function OrderSummary({ cartItems }: any) {
   const gst = Math.floor((subtotal - discount) * 0.18);
   const total = subtotal - discount + 100;
   const [open, setOpen] = useState(false);
-
   const handleGetCheckoutLink = async() =>{
+    setLoading(true)
     try {
-      const res = await axiosInstance.post("/stripe/create-payment-intent")
+      
+      const res = await axiosInstance.post("/stripe/create-payment-intent",{
+        shippingId:defaultAddress?.id
+      });
 
       if(res.data?.statusCode == 200){
+        setLoading(false)
         window.open(res.data.url, "_blank")
       }else{
         toast.error(res.data.message || "Failed to Crate Session")
@@ -36,27 +43,11 @@ export default function OrderSummary({ cartItems }: any) {
     } catch (error:any) {
       toast.error(error?.message || "Something went wrong")
     }
+    setLoading(false)
   }
   return (
     <div className="space-y-6">
-      <div className="pl-2">
-        <div className="address-header flex flex-row items-start justify-between">
-          <h2 className="font-semibold text-lg mb-2 ">Delivery Address</h2>
-          <Button
-            variant={"ghost"}
-            className="hover:bg-transparent text-primary p-0"
-            size={"sm"}
-          >
-            Change
-          </Button>
-        </div>
-        <div className="text-sm space-y-1 text-muted-foreground pl-2">
-          <p className="font-medium text-foreground">John Smith</p>
-          <p>123 Main Street, Apartment 4B</p>
-          <p>Mumbai, Maharashtra 400001</p>
-          <p>Phone: +91 98765 43210</p>
-        </div>
-      </div>
+      <AddressSelectorDialog  defaultAddress={defaultAddress} setDefaultAddress={setDefaultAddress} addresses={addresses}/>
       <section
         aria-labelledby="summary-heading"
         className="bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8 lg:mt-0"
@@ -98,11 +89,15 @@ export default function OrderSummary({ cartItems }: any) {
               handleGetCheckoutLink();
             }}
           >
-            Proceed to Checkout
+            Proceed to Checkout {loading &&  
+<div
+  className="w-6 h-6 border-t-2 border-transparent border-t-white rounded-full animate-spin"
+></div>
+}
           </Button>
         </div>
 
-        {open && <CheckoutDialog setOpen={setOpen} />}
+        {open && <CheckoutDialog setOpen={setOpen} addressId={defaultAddress?.id}/>}
       </section>
     </div>
   );

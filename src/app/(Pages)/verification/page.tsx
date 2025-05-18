@@ -14,7 +14,6 @@ function Page() {
    
     const res = await axiosInstance.post("/stripe/complete-payment",{
         transactionId:queryParams.get("token"),
-        shippingId:"cd9ee255-8aad-4b98-afcd-79328f48039e"
       }); 
 
       if(res.data?.statusCode == 201){
