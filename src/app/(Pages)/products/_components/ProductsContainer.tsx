@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import PageContainer from "@/components/Layout/PageContainer";
 import ProductCard from "./ProductItem";
 import { getCookie } from "@/lib/cookie";
+import { RefreshCw, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
   const queryClient = useQueryClient();
@@ -52,7 +54,22 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
   return (
     <PageContainer>
       <Filters handleFilter={handleFilter} form={form} />
-      {!response.isLoading || !response.isFetching || !response.isRefetching ||  response?.data?.data?.length != 0 ? (
+      {!response?.isLoading || !response?.isFetching || !response?.isRefetching ? ( response?.data?.data?.length <= 0 ? <div className="flex flex-col items-center justify-center py-16 px-4">
+          <div className="bg-gray-50 rounded-full p-6 mb-6">
+            <ShoppingBag className="w-16 h-16 text-gray-300" />
+          </div>
+          <h3 className="text-2xl font-semibold mb-2">No matches found</h3>
+          <p className="text-gray-500 text-center mb-8 max-w-md">
+            We couldn't find any items matching your search criteria. Try adjusting your filters or search terms.
+          </p>
+          <div className="flex gap-4">
+            <Button variant="outline" className="flex items-center gap-2" onClick={() => {form.reset()}}>
+              <RefreshCw className="w-4 h-4" />
+              Clear Search
+            </Button>
+            
+          </div>
+        </div> :
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 gap-3 w-full">
           {response?.data?.data?.map((product: any) => (
             <ProductCard key={product.id} product={product} />

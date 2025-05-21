@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ShoppingCart, User, UserPlus } from "lucide-react";
+import { LogOut, ShoppingCart, User, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -38,7 +38,7 @@ function UserDropDown() {
                 }else{
                     toast.error(res.message)
                 }
-            }}>Logout</DropdownMenuItem>
+            }}> <LogOut className='w-5 h-5 mr-2' /> Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

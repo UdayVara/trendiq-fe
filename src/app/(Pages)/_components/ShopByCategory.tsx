@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import PageContainer from '@/components/Layout/PageContainer'
 import { getCategories } from '@/api/category.actions';
 import { cookies } from 'next/headers';
+import { Button } from '@/components/ui/button';
 
 
 
@@ -33,6 +34,7 @@ export default async function ShopByCategory() {
             </Link>
           ))}
         </div></PageContainer>
+        <Link href={"/products"}><Button className='mx-auto mt-4 block'>Browse All</Button></Link>
       </div>
     </section>
   )
