@@ -5,31 +5,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AddressSelectorDialog } from "./AddressDialog";
 
-export default function OrderSummary({ cartItems,addresses }: any) {
+export default function OrderSummary({addresses,cartSummary }: any) {
   const [defaultAddress,setDefaultAddress] = useState(addresses.find((address: any) => address.isDefault));
   const [loading,setLoading] = useState(false);
-  const subtotal = cartItems.reduce(
-    (total: any, item: any) =>
-      total + item?.product_inventory?.price * item.quantity,
-    0
-  );
-  const discount = Math.floor(
-    cartItems.reduce(
-      (total: any, item: any) =>
-        total +
-        ((item?.product_inventory?.discount * item?.product_inventory?.price) /
-          100) *
-          item.quantity,
-      0
-    )
-  );
-  const gst = Math.floor((subtotal - discount) * 0.18);
-  const total = subtotal - discount + 100;
   const [open, setOpen] = useState(false);
   const handleGetCheckoutLink = async() =>{
     setLoading(true)
     try {
-      
       const res = await axiosInstance.post("/stripe/create-payment-intent",{
         shippingId:defaultAddress?.id
       });
@@ -62,23 +44,23 @@ export default function OrderSummary({ cartItems,addresses }: any) {
         <dl className="space-y-4">
           <div className="flex items-center justify-between">
             <dt className="text-sm text-gray-600">Subtotal</dt>
-            <dd className="text-sm font-medium text-gray-900">₹ {subtotal}</dd>
+            <dd className="text-sm font-medium text-gray-900">₹ {cartSummary?.amount}</dd>
           </div>
           <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
             <dt className="flex items-center text-sm text-gray-600">
               <span>Discount</span>
             </dt>
-            <dd className="text-sm font-medium text-green-600">₹ {discount}</dd>
+            <dd className="text-sm font-medium text-green-600">₹ {cartSummary?.discount}</dd>
           </div>
           <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
             <dt className="flex text-sm text-gray-600">
               <span>Tax estimate ( CGST + SGST )</span>
             </dt>
-            <dd className="text-sm font-medium text-gray-900">₹ {gst}</dd>
+            <dd className="text-sm font-medium text-gray-900">₹ {cartSummary?.gst}</dd>
           </div>
           <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
             <dt className="text-lg font-medium text-gray-900">Order total</dt>
-            <dd className="text-lg font-medium text-gray-900">₹ {total}</dd>
+            <dd className="text-lg font-medium text-gray-900">₹ {cartSummary?.finalAmount}</dd>
           </div>
         </dl>
 

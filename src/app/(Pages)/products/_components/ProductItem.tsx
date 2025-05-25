@@ -8,6 +8,7 @@ import { createWishlist, deleteWishlist } from "@/api/wishlist.actions";
 import { useSession } from "next-auth/react";
 import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
 import { toast } from "sonner";
+import { Heart } from "lucide-react";
 
 interface ProductCardProps {
   product: any;
@@ -42,11 +43,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   });
 
   return (
-    <Card key={product.id} className={` flex flex-col transition-all relative pt-0  pb-0 `}>
+    <Card key={product.id} className={`h-max min-h-full transition-all flex flex-col relative `}>
       
       <CardContent
         onClick={() => router.push("/product/" + product.id)}
-        className="p-4 pt-2 grow md:px-auto px-2 group cursor-pointer "
+        className="p-4 pt-2  md:px-auto px-2 group grow cursor-pointer "
       >
         
         <Image
@@ -71,39 +72,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           
         </div>
       </CardContent>
-      <CardFooter className="w-full md:p-2 p-1 pb-3">
+      <CardFooter className=" md:p-2 p-1 pb-3 absolute -top-28 right-2  h-full">
         {!user.data?.user ? (
-          <LoginDialog variant="outline" text="Add to Wishlist" />
+          <LoginDialog />
         ) : (
           <>
             {product?.wishlist?.length === 0 ? (
               <Button
-                className="w-full text-sm text-primary hover:text-primary"
+                className=" opacity-80 text-sm bg-none text-primary hover:text-primary w-7 h-7 rounded-full bg-white"
                 size="sm"
-                variant="outline"
+                variant="ghost"
                 onClick={() => addWishlistMutation.mutate(product.id)}
                 disabled={addWishlistMutation.isPending}
               >
-                {addWishlistMutation.isPending ? 
-                    <div className="flex text-sm flex-row items-center gap-2">Add to Wishlist  <div
-                    className="w-4 h-4 border-2 border-dashed rounded-full animate-spin border-primary mx-auto"
-                  ></div></div>
- : "Add to Wishlist"}
+                
+                 <Heart className="w-5 h-5 rounded transition-all"  color="#000000" />
               </Button>
             ) : (
               <Button
-                className="w-full text-primary hover:text-primary"
+                className="opacity-80 text-sm bg-none text-primary hover:text-primary w-7 h-7 rounded-full bg-white"
                 size="sm"
-                variant="outline"
+                variant="ghost"
                 onClick={() => removeWishlistMutation.mutate(product?.wishlist?.[0]?.id || "")}
                 disabled={removeWishlistMutation.isPending}
               >
-                {removeWishlistMutation.isPending ? <div className="flex flex-row items-center gap-2">Remove From Wishlist
-  <div
-    className="w-4 h-4 border-2 border-dashed rounded-full animate-spin border-primary mx-auto"
-  ></div>
- 
-</div>: "Remove From Wishlist"}
+                <Heart className="w-5 h-5 rounded transition-all" fill="#D12033"  />
               </Button>
             )}
           </>

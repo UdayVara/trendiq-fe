@@ -16,6 +16,7 @@ export const getCart = async () => {
       data: res.data?.data || [],
       addresses:res.data?.addresses || [],
       message: res.data.message,
+      cartSummary:res.data?.cartSummary || null
     };
   } else {
     return {
@@ -23,13 +24,15 @@ export const getCart = async () => {
       message: res.data.message || "Internal Server Error",
       addresses:[],
       data: [],
+      cartSummary:null
     };
   } } catch (error: any) {
         return {
             success: false,
             message: error?.message || "Internal Server Error",
             data: [],
-            addresses:[]
+            addresses:[],
+            cartSummary:null,
         }
   }
 };
