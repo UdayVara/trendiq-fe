@@ -74,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </CardContent>
       <CardFooter className=" md:p-2 p-1 pb-3 absolute -top-28 right-2  h-full">
         {!user.data?.user ? (
-          <LoginDialog />
+          <LoginDialog variant="outline" text="Add to Wishlist" isCustom={true}/>
         ) : (
           <>
             {product?.wishlist?.length === 0 ? (
