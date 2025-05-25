@@ -19,6 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               username,
               email,
               password,
+              source:"web",
             });
             if (res.data.statusCode === 201) {
               return {
@@ -27,6 +28,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 token: res.data.token,
                 image: "",
                 id: res.data.user.id,
+                source:res.data.user.source,
               };
             } else {
               throw new Error(res.data.message || "Something went wrong");
@@ -35,6 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             const res = await axiosInstance.post(`/signin`, {
               email,
               password,
+              source:"web"
             });
             if (res.data.statusCode === 201) {
               return {
@@ -43,6 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 token: res.data.token,
                 image: "",
                 id: res.data.user.id,
+                source:res.data.user.source,
               };
             } else {
               throw new Error(res.data.message || "Something went wrong");

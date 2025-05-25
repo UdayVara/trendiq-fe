@@ -8,6 +8,7 @@ declare module "next-auth" {
       token: string;
       username:string;
       email:string;
+      source: "web" | "google" | "app";
     } 
   }
 }
