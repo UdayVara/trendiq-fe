@@ -1,30 +1,48 @@
 "use client"
 
+import { Button } from '@/components/ui/button';
 import { getCookie } from '@/lib/cookie';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 function MobileGenderButtons() {
     const [gender,setGender] = useState(getCookie("gender") || "male")
-        const handleChange = (gender : "male" | "female") => { 
-            if(gender == "male"){
-                document.cookie = "gender=male";
-                window.location.reload()
-            }else{
-                document.cookie = "gender=female";
-                window.location.reload()
-            }
-         };
+
          const path = usePathname()
          useEffect(() => {
                 setGender(getCookie("gender") || "male")
               },[window.document.cookie])
   return (
     <>
-       {(path == "/" || path == "/products") && <div className="lg:hidden grid border-b-gray-700 border-b grid-cols-12  w-full ">
-            <div className={`col-span-6 text-center text-lg py-1 transition-all duration-300 border-t border-t-gray-00 border-r-primary border-r ${gender == "male" ? "bg-primary text-white":"bg-white text-primary"}`} onClick={()=>{handleChange("male")}}>Men</div>
-            <div className={`col-span-6 text-center text-lg py-1 transition-all duration-300 border-t border-t-gray-00 ${gender == "female" ? "bg-primary text-white":"bg-white text-primary"}`} onClick={()=>{handleChange("female")}}>Women</div>
-        </div>}
+       {(path == "/" || path == "/products") && 
+        <div className="relative bg-gray-100 md:hidden block rounded-2xl p-1">
+            {/* Sliding background */}
+            <div
+              className={`absolute top-1 bottom-1 w-1/2 bg-white rounded-xl shadow-sm transition-transform duration-300 ${
+                gender === "female" ? "transform translate-x-full" : ""
+              }`}
+            />
+            <div className="relative grid grid-cols-2">
+              <Button
+                variant="ghost"
+                size={"sm"}
+                className={`rounded-xl text-sm py-3 font-medium  z-10 ${gender == "male" ? "bg-red-700 text-white": "text-gray-700 hover:text-gray-900 bg-red-50"}`}
+                onClick={() => {setGender("male"); document.cookie = "gender=male";
+                window.location.reload()}}
+              >
+                Male
+              </Button>
+              <Button
+                variant="ghost"
+                size={"sm"}
+                className={`rounded-xl text-sm py-3 font-medium  z-10 ${gender == "female" ? "bg-red-700 text-white": "text-gray-700 hover:text-gray-900 bg-red-50"}`}
+                onClick={() => {setGender("female"); document.cookie = "gender=female";
+                window.location.reload()}}
+              >
+                Female
+              </Button>
+            </div>
+          </div>}
     </>
   )
 }

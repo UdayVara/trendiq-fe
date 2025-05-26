@@ -1,16 +1,16 @@
 import Link from 'next/link'
-import UserDropDown from './UserDropDown'
 import { auth } from '@/auth'
 import PublicNavigator from './PublicNavigator'
 import GenderToggle from './GenderToggle'
 import MobileGenderButtons from './MobileGenderButtons'
+import { Search, ShoppingCart, User } from 'lucide-react'
 
 export default async function Header({hideOptions = false}: {hideOptions?: boolean}) {
   const res = await auth()
   return (
     <>
-      <MobileGenderButtons />
-    <header className="border-b bg-white relative">
+      {/* <MobileGenderButtons /> */}
+    <header className="border-b flex flex-col w-full bg-white relative">
       <div className="container  top-0  mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-red-600">
           TrendIQ
@@ -20,11 +20,17 @@ export default async function Header({hideOptions = false}: {hideOptions?: boole
           <GenderToggle />
          
           {
-            (res?.user && !hideOptions) ? <UserDropDown /> : <PublicNavigator />
+            (res?.user && !hideOptions) ? <>
+            <Search size={20} color='#4b5563' className='text-gray-600 md:mx-1 mx-1.5 grow flex flex-row items-center justify-center' />
+            <Link href="/cart" className='text-gray-600  flex flex-row items-center justify-centergrow md:mx-1 mx-1.5'>
+            <ShoppingCart size={20} color='#4b5563' /></Link>
+            <Link href="/profile" className='text-gray-600 flex flex-row items-center justify-center grow md:mx-1 mx-1.5'>
+            <User size={20} color='#4b5563' className='text-gray-600 md:mx-1 mx-1.5'/></Link>
+            </>: <><Search size={20} color='#4b5563' className='text-gray-600 mx-2' /><PublicNavigator /></>
           }
         </nav>
       </div>
-      
+      <MobileGenderButtons />
     </header>
     </>
   )
