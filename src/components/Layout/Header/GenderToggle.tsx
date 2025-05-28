@@ -1,13 +1,15 @@
 "use client"
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import "./GenderToggle.css"
 import { getCookie, setCookie } from '@/lib/cookie';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 function GenderToggle() {
-  const [gender,setGender] = useState(getCookie("gender") || "male")
-    
-     const path = usePathname()
+  const [gender,setGender] = useState("male")
+      const path = usePathname()
+      useEffect(() => {
+        setGender(getCookie("gender") || "male");
+      }, []);
      
 
   return (

@@ -68,7 +68,7 @@ export default function Hero() {
       </Carousel>
 
       {/* Clickable Dots Inside Active Slide */}
-      <div className="absolute bottom-20 lg:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4  px-3 py-1 rounded-full">
+      <div className="absolute bottom-10 lg:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4  px-3 py-1 rounded-full">
         {data?.banner?.map((_:any, index:any) => (
           <button
             key={index}
