@@ -1,7 +1,7 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import "./GenderToggle.css"
-import { getCookie } from '@/lib/cookie';
+import { getCookie, setCookie } from '@/lib/cookie';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 function GenderToggle() {
@@ -9,9 +9,7 @@ function GenderToggle() {
     
      const path = usePathname()
      
-     useEffect(() => {
-       setGender(getCookie("gender") || "male")
-     },[window.document.cookie])
+
   return (
     <>
     {(path == "/" || path == "/products") &&<div className="bg-gray-50">
@@ -29,7 +27,7 @@ function GenderToggle() {
                   className={`rounded-full px-6 py-2 transition-all duration-300 font-medium ${
                     gender === "male" ? "bg-primary shadow-sm text-white" : "text-gray-600 hover:text-gray-900"
                   }`}
-                  onClick={() => {setGender("male");document.cookie = "gender=male";
+                  onClick={() => {setGender("male");setCookie("gender","male");
             window.location.reload()}}
                 >
                   Men
@@ -42,7 +40,7 @@ function GenderToggle() {
                       ? "bg-primary shadow-sm text-white"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
-                  onClick={() => {setGender("female");document.cookie = "gender=female";
+                  onClick={() => {setGender("female");setCookie("gender","female");
             window.location.reload()}}
                 >
                   Women
