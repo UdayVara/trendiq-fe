@@ -47,5 +47,27 @@ export const getTrendingProducts = async (gender:"male"|"female") => {
     };
   }
 };
+export const getSearchProducts = async (gender:"male"|"female") => {
+  try {
+    const res = await axiosInstance.get("/product/home/search-products?gender="+gender);
+    if (res.data.statusCode == 200) {
+      return { success: true, data: res.data?.data || [], message: res.data.message};
+    } else {
+      return {
+        success: false,
+        message: res.data.message || "Internal Server Error",
+        data:[],
+        banner:[]
+      };
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "Internal Server Error",
+      data:[],
+      banner:[]
+    };
+  }
+};
 
 

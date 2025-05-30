@@ -63,7 +63,11 @@ function ProductsContainer({ data }: { data: product[]; wishlist: any[] }) {
             We couldn't find any items matching your search criteria. Try adjusting your filters or search terms.
           </p>
           <div className="flex gap-4">
-            <Button variant="outline" className="flex items-center gap-2" onClick={() => {form.reset()}}>
+            <Button variant="outline" className="flex items-center gap-2" onClick={() => { const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get("category")){
+      urlParams.delete("category")
+      window.location.search = urlParams.toString()
+    }form.reset()}}>
               <RefreshCw className="w-4 h-4" />
               Clear Search
             </Button>

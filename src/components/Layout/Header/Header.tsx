@@ -4,6 +4,7 @@ import PublicNavigator from './PublicNavigator'
 import GenderToggle from './GenderToggle'
 import MobileGenderButtons from './MobileGenderButtons'
 import { Search, ShoppingCart, User } from 'lucide-react'
+import { ProductSearchToggle } from './ProductSearchToggle'
 
 export default async function Header({hideOptions = false}: {hideOptions?: boolean}) {
   const res = await auth()
@@ -26,7 +27,7 @@ export default async function Header({hideOptions = false}: {hideOptions?: boole
             <ShoppingCart size={20} color='#4b5563' /></Link>
             <Link href="/profile" className='text-gray-600 flex flex-row items-center justify-center grow md:mx-0.5 mx-1.5'>
             <User size={20} color='#4b5563' className='text-gray-600 '/></Link>
-            </>: <><Search size={20} color='#4b5563' className='text-gray-600 mx-2' /><PublicNavigator /></>
+            </>: <><ProductSearchToggle /><PublicNavigator /></>
           }
         </nav>
       </div>

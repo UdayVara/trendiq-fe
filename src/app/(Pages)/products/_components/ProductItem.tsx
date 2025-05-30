@@ -72,7 +72,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           
         </div>
       </CardContent>
-      <CardFooter className=" md:p-2 p-1 pb-3 absolute -top-28 right-2  h-full">
+      <CardFooter className=" md:p-2 p-1 pb-3 absolute md:-top-52 -top-28 right-2  h-full">
         {!user.data?.user ? (
           <LoginDialog variant="outline" text="Add to Wishlist" isCustom={true}/>
         ) : (
