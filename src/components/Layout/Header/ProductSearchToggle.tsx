@@ -1,9 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon,  Search } from "lucide-react"
+import {  Search } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import {
   Command,
   CommandEmpty,
@@ -21,6 +20,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getCookie } from "@/lib/cookie"
 import { getSearchProducts } from "@/api/product.actions"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 
 
@@ -39,7 +39,7 @@ export function ProductSearchToggle() {
           <CommandInput placeholder="Search Product" />
           <CommandList>
             <CommandEmpty>No product found.</CommandEmpty>
-            <CommandGroup className="max-h-40 overflow-y-auto">
+            <CommandGroup className="max-h-48 overflow-y-auto">
               {data && data.data.map((product:any) => (
                 <CommandItem
                   key={product.id}
@@ -49,12 +49,7 @@ export function ProductSearchToggle() {
                     setOpen(false)
                   }}
                 >
-                  <CheckIcon
-                    className={cn(
-                      "mr-2 h-4 w-4 opacity-0",
-                      
-                    )}
-                  />
+                  <Image width={1000} height={1000} src={product?.imageUrl} alt={product.title} className="w-8 h-8 rounded object-cover object-top" />
                   {product.title}
                 </CommandItem>
               ))}
