@@ -3,7 +3,7 @@ import { auth } from '@/auth'
 import PublicNavigator from './PublicNavigator'
 import GenderToggle from './GenderToggle'
 import MobileGenderButtons from './MobileGenderButtons'
-import { Search, ShoppingCart, User } from 'lucide-react'
+import {  ShoppingCart, User } from 'lucide-react'
 import { ProductSearchToggle } from './ProductSearchToggle'
 
 export default async function Header({hideOptions = false}: {hideOptions?: boolean}) {
