@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AddressSelectorDialog } from "./AddressDialog";
 
-export default function OrderSummary({addresses,cartSummary }: any) {
+export default function OrderSummary({addresses,cartSummary,isOutOfStock}: any) {
   const [defaultAddress,setDefaultAddress] = useState(addresses.find((address: any) => address.isDefault));
   const [loading,setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -67,8 +67,13 @@ export default function OrderSummary({addresses,cartSummary }: any) {
         <div className="mt-6">
           <Button
             className="w-full"
+            disabled={isOutOfStock == null ? false : true}
             onClick={() => {
-              handleGetCheckoutLink();
+              if(addresses.length > 0){
+                handleGetCheckoutLink();
+              }else{
+                toast.error("Address is Required Create one")
+              }
             }}
           >
             Proceed to Checkout {loading &&  
@@ -78,6 +83,7 @@ export default function OrderSummary({addresses,cartSummary }: any) {
 }
           </Button>
         </div>
+          {isOutOfStock != null && <h4 className="text-center text-xs font-medium mt-1 text-red-500">Remove Out of Stock Items</h4>}
 
         {open && <CheckoutDialog setOpen={setOpen} addressId={defaultAddress?.id}/>}
       </section>

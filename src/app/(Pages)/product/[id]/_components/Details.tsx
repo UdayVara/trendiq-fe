@@ -153,7 +153,9 @@ function Details({ product }: { product: any }) {
       </div>
 
       {}
-      {selectedVariant?.stock - 25 <= selectedVariant?.minimum_stock ? (
+      {selectedVariant?.stock <= selectedVariant?.minimum_stock ? <h4 className="text-red-600  text-lg font-semibold">
+          Out of Stock
+        </h4> :selectedVariant?.stock - 25 <= selectedVariant?.minimum_stock ? (
         <h4 className="text-yellow-600  text-lg font-semibold">
           Hurry Up Stock Running Out
         </h4>
@@ -162,7 +164,7 @@ function Details({ product }: { product: any }) {
           <h4 className="text-green-600  text-lg font-semibold">In Stock</h4>
         )
       )}
-      {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ?  <Button size="lg" variant={'outline'} className="w-full text-primary" onClick={addProductToCart}>
+      {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ?  <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={addProductToCart}>
         Add to Cart
       </Button> : <LoginDialog variant="outline" text="Add to Cart"/>}
 

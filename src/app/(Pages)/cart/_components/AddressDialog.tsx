@@ -14,6 +14,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { MapPin } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function AddressSelectorDialog({
   addresses,
@@ -21,7 +22,7 @@ export function AddressSelectorDialog({
   defaultAddress,
 }: any) {
   const [open, setOpen] = useState(false);
-
+const router = useRouter()
   const handleConfirm = (selected: any) => {
     setDefaultAddress(selected || null);
     setOpen(false);
@@ -43,16 +44,20 @@ export function AddressSelectorDialog({
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">
-                No address selected
+                No address available
               </p>
             )}
           </div>
           <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
+            {addresses.length > 0 ? <DialogTrigger asChild>
               <Button variant="ghost" className="text-primary" size="sm">
                 Change
-              </Button>
-            </DialogTrigger>
+              </Button> 
+            </DialogTrigger> : <Button variant="ghost" className="text-primary" size="sm" onClick={()=>{
+                router.push("/profile?tab=addresses")
+              }}>
+                Add
+              </Button> } 
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>Select delivery address</DialogTitle>

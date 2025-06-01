@@ -22,7 +22,7 @@ export default async function Header({hideOptions = false}: {hideOptions?: boole
          
           {
             (res?.user && !hideOptions) ? <>
-            <Search size={20} color='#4b5563' className='text-gray-600 md:mx-0.5 mx-1.5 grow flex flex-row items-center justify-center' />
+            <ProductSearchToggle />
             <Link href="/cart" className='text-gray-600  flex flex-row items-center justify-centergrow md:mx-0.5 mx-1.5'>
             <ShoppingCart size={20} color='#4b5563' /></Link>
             <Link href="/profile" className='text-gray-600 flex flex-row items-center justify-center grow md:mx-0.5 mx-1.5'>

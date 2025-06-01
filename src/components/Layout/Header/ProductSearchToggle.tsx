@@ -32,7 +32,7 @@ export function ProductSearchToggle() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Search size={20} color='#4b5563' className='text-gray-600 md:mx-0.5 mx-1.5 grow flex flex-row items-center justify-center' />
+        <Search size={20} color='#4b5563' className='text-gray-600 md:mx-0.5 mx-1.5 cursor-pointer  grow flex flex-row items-center justify-center' />
       </PopoverTrigger>
       <PopoverContent className="md:w-[400px] w-[100vw] top-20 mt-4 mr-1 p-0 md:max-w-[400px]">
         <Command>

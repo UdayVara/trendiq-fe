@@ -66,7 +66,7 @@ export default function CartItem({ item }: any) {
   return (
     <>
       {loading && <FullPageLoader />}
-      <li className="border shadow-sm rounded-lg">
+      <li className={`border shadow-sm rounded-lg ${item?.product_inventory?.stock < item?.product_inventory?.minimum_stock ? "opacity-50" : ""}`}>
         <div className="flex items-start">
           <div className="flex-shrink-0">
             <Image
@@ -82,7 +82,7 @@ export default function CartItem({ item }: any) {
             <div className=" flex flex-row justify-between items-start pr-4 pt-2">
               <div className="sm:pr-6">
                 <h3 className="text-base sm:text-lg font-medium text-gray-900">
-                  <a href="#" className="hover:text-gray-800 flex flex-row items-center">
+                  <a href="#" className={`hover:text-gray-800 ${item?.product_inventory?.stock < item?.product_inventory?.minimum_stock  ? "text-gray-600 : " : ""} flex flex-row items-center`}>
                     {item?.product?.title}  <Button size={"sm"} onClick={()=>{
                       setRemovedialog(true)
                     }} variant={"ghost"} className='ml-auto text-primary block'><Trash2  size={18}/></Button>
@@ -96,6 +96,7 @@ export default function CartItem({ item }: any) {
                 <p className="mt-1 text-sm text-gray-500">
                   {item?.product?.description}
                 </p>
+                {item?.product_inventory?.stock < item?.product_inventory?.minimum_stock && <p className="mt-1 text-sm text-red-500">Out of Stock</p>}
               </div>
 
               <div className="mt-4 sm:mt-0 flex items-center justify-between ">

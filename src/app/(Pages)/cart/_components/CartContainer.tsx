@@ -56,7 +56,7 @@ function CartContainer({
               ))}
             </ul>
           </section>
-          <OrderSummary cartItems={cartRes?.data?.data} addresses={cartRes?.data?.addresses} cartSummary={cartRes?.data?.cartSummary}/>
+          <OrderSummary isOutOfStock={cartRes?.data?.data?.find((item:any) => item.product_inventory?.product_inventory?.stock < item.product_inventory?.product_inventory?.minimum_stock ) || null} cartItems={cartRes?.data?.data} addresses={cartRes?.data?.addresses} cartSummary={cartRes?.data?.cartSummary}/>
         </div>
       )}
     </>
