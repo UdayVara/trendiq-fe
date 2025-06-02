@@ -3,9 +3,11 @@ import axiosInstance from '@/lib/axios'
 import Details from './_components/Details'
 import ImageGallery from './_components/ImageGallery'
 import PageContainer from '@/components/Layout/PageContainer'
+import { auth } from '@/auth'
 export default async  function ProductPage({params}:any) {
   const {id} = await params
-  const product = await axiosInstance.get(`/product/${id}`)
+  const user = await auth()
+  const product = await axiosInstance.get(`/product/${id}?email=${user?.user?.email}`,)
   return (
     <div className=""><PageContainer>
 

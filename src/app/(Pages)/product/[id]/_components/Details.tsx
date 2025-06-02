@@ -1,10 +1,12 @@
 "use client";
 import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
+import ButtonLoader from "@/components/Layout/Loader/ButtonLoader";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axiosInstance from "@/lib/axios";
+import { useQueryClient } from "@tanstack/react-query";
 import { Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -16,6 +18,7 @@ function Details({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState(
     product.product_inventory[0].size.id
   );
+  const [btnLoading,setBtnLoading] = useState(false)
   const user = useSession()
   const [selectedVariant, setSelectedVariant] = useState(
     product.product_inventory[0]
@@ -41,8 +44,8 @@ function Details({ product }: { product: any }) {
   ];
 
   const addProductToCart = async () => {
+    setBtnLoading(true)
     try {
-      
       const response = await axiosInstance.post("/cart", {
         productId: product.id,
         quantity: 1,
@@ -52,6 +55,7 @@ function Details({ product }: { product: any }) {
       });
       console.log(response.data)
       if (response.data?.statusCode == 201) {
+        router.refresh()
         toast.success(response.data.message || "Product Added Successfully");
       } else {
         toast.error(response.data.message || "Something went wrong");
@@ -60,8 +64,27 @@ function Details({ product }: { product: any }) {
       console.error(error);
       toast.error(error.message || "Something went wrong");
     }
+    setBtnLoading(false)
+  };
+
+  const queryClient = useQueryClient();
+  const handleDeleteCartItem = async (id:string) => {
+    setBtnLoading(true);
+    try {
+      const res = await axiosInstance.delete(`/cart/${id}`);
+      if (res.data?.statusCode == 201) {
+        router.refresh();
+        await queryClient.invalidateQueries({ queryKey: ["cart"] });
+        toast.success(`Item removed successfully`);
+      } else {
+        toast.error(res.data.message || "Something went wrong");
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+    }setBtnLoading(false)
   };
   const router = useRouter()
+  console.log("Product", product);
   return (
     <div className="space-y-6 lg:col-span-6 col-span-12 md:px-0 px-2">
       <div>
@@ -94,7 +117,7 @@ function Details({ product }: { product: any }) {
               <Label
                 key={color.id}
                 htmlFor={`color-${color.id}`}
-                className="cursor-pointer"
+                className="cursor-pointer max-w-[70px] text-center"
               >
                 <RadioGroupItem
                   id={`color-${color.id}`}
@@ -164,8 +187,12 @@ function Details({ product }: { product: any }) {
           <h4 className="text-green-600  text-lg font-semibold">In Stock</h4>
         )
       )}
-      {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ?  <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={addProductToCart}>
-        Add to Cart
+      {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ? product?.cart?.product_inventoryId == selectedVariant?.id ? <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={()=>{
+        handleDeleteCartItem(product?.cart?.id)
+      }}>
+        Remove From Cart {btnLoading && <ButtonLoader isPrimary={true} />}
+      </Button> : <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={addProductToCart}>
+        Add to Cart {btnLoading && <ButtonLoader isPrimary={true} />}
       </Button> : <LoginDialog variant="outline" text="Add to Cart"/>}
 
       <Tabs defaultValue="description" className="w-full">
