@@ -21,9 +21,11 @@ function Page() {
         window.location.href = "/"
       }else{
         toast.error(res?.data?.message || "Failed to Record Payment")
+        window.location.href = "/"
       }
     } catch (error:any) {
       toast.error(error?.message || "Failed to Verify Payment")
+      window.location.href = "/"
     }
   }
   useEffect(() => {

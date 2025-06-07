@@ -67,7 +67,7 @@ export default function OrderSummary({addresses,cartSummary,isOutOfStock}: any) 
         <div className="mt-6">
           <Button
             className="w-full"
-            disabled={isOutOfStock == null ? false : true}
+            disabled={isOutOfStock == false ? false : true}
             onClick={() => {
               if(addresses.length > 0){
                 handleGetCheckoutLink();
@@ -83,7 +83,7 @@ export default function OrderSummary({addresses,cartSummary,isOutOfStock}: any) 
 }
           </Button>
         </div>
-          {isOutOfStock != null && <h4 className="text-center text-xs font-medium mt-1 text-red-500">Remove Out of Stock Items</h4>}
+          {isOutOfStock != false && <h4 className="text-center text-xs font-medium mt-1 text-red-500">Remove Out of Stock Items</h4>}
 
         {open && <CheckoutDialog setOpen={setOpen} addressId={defaultAddress?.id}/>}
       </section>

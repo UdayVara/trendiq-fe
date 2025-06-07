@@ -27,6 +27,9 @@ function CartContainer({
     staleTime:0
   });
   const router = useRouter();
+  console.log("result",cartRes?.data?.data?.some(
+      (item: any) =>
+        item.product_inventory?.stock < item.product_inventory?.minimum_stock))
   return (
     <>
       {cartRes.data.data?.length == 0 ? (
