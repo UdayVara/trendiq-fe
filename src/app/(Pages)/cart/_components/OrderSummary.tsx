@@ -4,6 +4,7 @@ import axiosInstance from "@/lib/axios";
 import { useState } from "react";
 import { toast } from "sonner";
 import { AddressSelectorDialog } from "./AddressDialog";
+import DotButtonLoader from "@/components/Layout/Loader/DotButtonLoader";
 
 export default function OrderSummary({addresses,cartSummary,isOutOfStock}: any) {
   const [defaultAddress,setDefaultAddress] = useState(addresses.find((address: any) => address.isDefault));
@@ -66,7 +67,8 @@ export default function OrderSummary({addresses,cartSummary,isOutOfStock}: any) 
 
         <div className="mt-6">
           <Button
-            className="w-full"
+            className="w-full "
+            
             disabled={isOutOfStock == false ? false : true}
             onClick={() => {
               if(addresses.length > 0){
@@ -76,11 +78,7 @@ export default function OrderSummary({addresses,cartSummary,isOutOfStock}: any) 
               }
             }}
           >
-            Proceed to Checkout {loading &&  
-<div
-  className="w-6 h-6 border-t-2 border-transparent border-t-white rounded-full animate-spin"
-></div>
-}
+            { loading ? <DotButtonLoader /> :  "Proceed to Checkout"}
           </Button>
         </div>
           {isOutOfStock != false && <h4 className="text-center text-xs font-medium mt-1 text-red-500">Remove Out of Stock Items</h4>}

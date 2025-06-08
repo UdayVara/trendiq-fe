@@ -2,10 +2,10 @@
 import { getUserClient } from "@/actions/auth.actions";
 import axiosInstance from "@/lib/axios";
 
-export const getProducts = async (page = 1,search?:string | null,gender?:string,category?:string) => {
+export const getProducts = async (page = 1,pageSize?:number,search?:string | null,gender?:string,category?:string) => {
   try {
     const user = await getUserClient()
-    const res = await axiosInstance.get(`/product?page=${page}&size=50&search=${search}&gender=${gender != "all" ? gender : ""}&categoryId=${category != "all" ? category : ""}${user?.user?.email? `&userEmail=${user?.user?.email}` : ""}`);
+    const res = await axiosInstance.get(`/product?page=${page}&size=${pageSize}&search=${search}&gender=${gender != "all" ? gender : ""}&categoryId=${category != "all" ? category : ""}${user?.user?.email? `&userEmail=${user?.user?.email}` : ""}`);
     if (res.data.statusCode == 200) {
       return { success: true, data: res.data?.data || [], message: res.data.message,wishlist:res.data.wishlist || [] };
     } else {

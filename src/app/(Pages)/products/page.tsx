@@ -18,9 +18,11 @@ export default async function ProductListing({
   const cookieStore = await cookies()
   const params = await searchParams
   const categoryQuery = params.category;
-  console.log("Category Query", categoryQuery);
-  const data = await axiosInstance.get(`/product?page=1&size=12&userEmail=${user?.user?.email}&gender=${cookieStore.get("gender")?.value || "male"}&categoryId=${categoryQuery || ""}`);
+  const defaultPageSize = 4;
+  const data = await axiosInstance.get(`/product?page=1&size=${defaultPageSize}&userEmail=${user?.user?.email}&gender=${cookieStore.get("gender")?.value || "male"}&categoryId=${categoryQuery || ""}`);
   return (
+    // <TransitionProvider>
+
     <div className="min-h-screen bg-background">
       <PageContainer>
         <div className="py-8">
@@ -29,7 +31,7 @@ export default async function ProductListing({
           </h1>
 
          
-              <ProductsContainer data={data.data?.data || []} wishlist={data.data?.wishlist || []} />
+              <ProductsContainer totalResults={data?.data?.totalCount} defaultPageSize={defaultPageSize} data={data.data?.data || []} wishlist={data.data?.wishlist || []} />
         </div>
       </PageContainer>
     </div>

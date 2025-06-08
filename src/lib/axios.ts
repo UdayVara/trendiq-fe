@@ -26,7 +26,6 @@ axiosInstance.interceptors.request.use(
         access_token = user?.user?.token || ''
       }
     }
-    console.log(access_token)
     if (access_token) {
       if (!config.headers["authorization"]) {
         config.headers.authorization = `Bearer ${access_token}`;
@@ -34,7 +33,6 @@ axiosInstance.interceptors.request.use(
         config.headers.authorization = `Bearer ${access_token}`;
       }
     }
-
     return config;
   },
   (error) => {

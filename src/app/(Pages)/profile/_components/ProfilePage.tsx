@@ -17,6 +17,7 @@ import {
   FileText,
   Settings,
   EllipsisVertical,
+  LogOut,
 } from "lucide-react";
 import UserInfo from "./UserInfo";
 import UpdateProfile from "./UpdateProfile";
@@ -27,6 +28,8 @@ import Support from "./Support";
 import TermsAndConditions from "./TermsAndConditions";
 import PageContainer from "@/components/Layout/PageContainer";
 import { useEffect, useState } from "react";
+import { signOutAction } from "@/actions/auth.actions";
+import TransitionProvider from "@/Providers/TransitionProvider/FramerMotionTransitionProvider";
 
 export default function ProfilePage() {
   const [isOpen, setOpen] = useState(false);
@@ -48,7 +51,6 @@ export default function ProfilePage() {
       }
     }
   },[])
-
   const updateTab = (tab : string) => {
     const url = new URL(window.location.href);
     url.searchParams.set("tab", tab);
@@ -56,6 +58,7 @@ export default function ProfilePage() {
     setTab(tab)
   }
   return (
+    <TransitionProvider>
     <PageContainer>
       <div className="mb-6 pb-20  bg-[#fafafa] mt-4">
         <div className=" text-white pb-12 pt-7 mb-6">
@@ -140,6 +143,14 @@ export default function ProfilePage() {
                     <FileText className="h-5 w-5 mr-2" />
                     Terms
                   </TabsTrigger>
+                  <TabsTrigger
+                    value="logout"
+                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    onClick={async()=>{await signOutAction();window.location.replace("/")}}
+                  >
+                    <LogOut className="h-5 w-5 mr-2" />
+                    Logout
+                  </TabsTrigger>
                 </TabsList>
               </CardContent>
             </Card>
@@ -216,7 +227,7 @@ export default function ProfilePage() {
                       Read our terms and conditions
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="bg-white rounded-b-lg">
+                  <CardContent className="bg-white rounded-b-lg mt-3">
                     <TermsAndConditions />
                   </CardContent>
                 </Card>
@@ -384,5 +395,6 @@ export default function ProfilePage() {
         </div>
       </div>
     </PageContainer>
+    </TransitionProvider>
   );
 }

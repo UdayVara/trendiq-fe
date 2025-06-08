@@ -13,6 +13,7 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { signupAction } from '@/actions/auth.actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 // Validation Schema
 const signUpSchema = z
@@ -45,6 +46,7 @@ export default function SignUpPage() {
     },
   });
   const router = useRouter()
+  const {update} = useSession()
   const onSubmit = async(data: z.infer<typeof signUpSchema>) => {
     try {
       const res = await signupAction(data);
@@ -52,6 +54,7 @@ export default function SignUpPage() {
       if(res.success){
         toast.success(res.message)
         form.reset();
+        await update()
         router.push('/')
       }else{
         toast.error(res.message)

@@ -2,7 +2,7 @@
 import React from 'react'
 import "./loader.css"
 function Loading() {
-  if(window){
+  if(typeof window !== 'undefined' && window){
 
     window.scrollTo({
       top: 0,

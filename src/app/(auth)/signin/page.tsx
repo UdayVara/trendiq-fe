@@ -10,6 +10,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { signinAction } from "@/actions/auth.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -26,6 +27,7 @@ export default function SignInPage() {
       password: "",
     },
   });
+  const {update} = useSession()
 const router = useRouter()
   const onSubmit = async(data: SignInFormData) => {
     try {
@@ -34,6 +36,7 @@ const router = useRouter()
       if(res.success){
         toast.success(res.message)
         form.reset();
+        await update()
         router.push('/')
       }else{
         toast.error(res.message)
