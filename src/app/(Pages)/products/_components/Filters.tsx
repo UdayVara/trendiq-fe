@@ -32,8 +32,8 @@ function Filters({
 
   
   return (
-    <div className="flex flex-col md:flex-row gap-4 items-center mb-8">
-      <div className="relative flex-1">
+    <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
+      <div className="relative flex-1 w-full">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input
           placeholder="Search for fashion items..."
@@ -55,8 +55,9 @@ function Filters({
             setValue("category", value);
             handleFilter();
           }}
+          
         >
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className="w-full grow">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -72,7 +73,7 @@ function Filters({
             reset()
             handleFilter();
           }}
-          className="bg-white text-red-600 border-red-600 hover:bg-red-50"
+          className="bg-white w-ful grow text-red-600 border-red-600 hover:bg-red-50"
         >
           Reset Filters
         </Button>
