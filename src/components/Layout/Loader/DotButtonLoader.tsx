@@ -1,8 +1,8 @@
 import React from 'react'
 import "./DotButtonLoader.css"
-function DotButtonLoader() {
+function DotButtonLoader({isPrimary = false}:{isPrimary?:boolean}) {
   return (
-<div className="loader-line"></div>
+<div className={isPrimary ? "loader-line-primary" : "loader-line"}></div>
 
 
   )

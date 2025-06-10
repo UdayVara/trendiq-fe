@@ -1,6 +1,6 @@
 "use client";
 import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
-import ButtonLoader from "@/components/Layout/Loader/ButtonLoader";
+import DotButtonLoader from "@/components/Layout/Loader/DotButtonLoader";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -190,9 +190,9 @@ function Details({ product }: { product: any }) {
       {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ? product?.cart?.product_inventoryId == selectedVariant?.id ? <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={()=>{
         handleDeleteCartItem(product?.cart?.id)
       }}>
-        Remove From Cart {btnLoading && <ButtonLoader isPrimary={true} />}
+        {!btnLoading ? "Remove From Cart" : <DotButtonLoader  isPrimary={true}/>}
       </Button> : <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={addProductToCart}>
-        Add to Cart {btnLoading && <ButtonLoader isPrimary={true} />}
+        {!btnLoading ? "Add to Cart" : <DotButtonLoader isPrimary={true} />}
       </Button> : <LoginDialog variant="outline" text="Add to Cart"/>}
 
       <Tabs defaultValue="description" className="w-full">

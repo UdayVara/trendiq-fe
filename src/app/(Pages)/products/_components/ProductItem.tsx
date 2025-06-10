@@ -77,17 +77,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <LoginDialog variant="outline" text="Add to Wishlist" isCustom={true}/>
         ) : (
           <>
+          
             {product?.wishlist?.length === 0 ? (
+              <div className="w-8 h-8 rounded-full border-dashed border-primary">
+
               <Button
-                className=" opacity-80 text-sm bg-none text-primary hover:text-primary w-7 h-7 rounded-full bg-white"
+                className=" opacity-80 text-sm bg-none text-primary hover:text-primary w-7 h-7 border-primary border-spin rounded-full bg-white"
                 size="sm"
                 variant="ghost"
                 onClick={() => addWishlistMutation.mutate(product.id)}
                 disabled={addWishlistMutation.isPending}
-              >
+                >
                 
                  <Heart className="w-5 h-5 rounded transition-all"  color="#000000" />
               </Button>
+                </div>
             ) : (
               <Button
                 className="opacity-80 text-sm bg-none text-primary hover:text-primary w-7 h-7 rounded-full bg-white"
