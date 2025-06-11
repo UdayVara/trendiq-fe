@@ -139,12 +139,13 @@ function ProductsContainer({
           
             <InfiniteScroll
               pageStart={0}
+              threshold={700}
               className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 gap-3 w-full pb-20"
               loadMore={() =>setTimeout(() => fetchNextPageData(),200)}
               hasMore={total > response?.data?.data?.length || false}
               loader={
                 <>
-               {[...Array(Math.floor(Math.random() * (5 - 2 + 1) + 2))].map((_, index) => (
+               {[...Array(Math.floor(Math.random() * (4 - 2 + 1) + 2))].map((_, index) => (
             <div className="animate-pulse w-full my-5 h-72 mb-28" key={index}>
               <div className="p-4 h-full w-full mb-4 bg-gray-200 rounded-md"></div>
               <div className="h-6 bg-gray-200 rounded mb-2"></div>
