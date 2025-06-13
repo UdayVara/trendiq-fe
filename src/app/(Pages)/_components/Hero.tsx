@@ -10,6 +10,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { getCookie } from "@/lib/cookie";
 import { getTrendingProducts } from "@/api/product.actions";
+import Autoplay from "embla-carousel-autoplay"
 
 export default function Hero() {
   const { data,isLoading } = useQuery({
@@ -32,7 +33,14 @@ export default function Hero() {
   return (
     <div className="relative w-full">
       {/* Carousel */}
-      <Carousel setApi={setApi} className=" relative w-full h-min">
+      <Carousel  plugins={[
+        Autoplay({
+          delay: 2000,
+          jump:false,
+          stopOnMouseEnter:true,
+          
+        }),
+      ]} setApi={setApi} className=" relative w-full h-min">
         <CarouselContent className=" relative w-full ml-0">
           {data?.banner &&
             data?.banner?.length > 0 &&

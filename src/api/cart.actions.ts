@@ -36,3 +36,25 @@ export const getCart = async () => {
         }
   }
 };
+
+
+export const getCartCount = async() => {
+    try {
+        const res = await axiosInstance.get("/cart/count");
+        if (res.data.statusCode == 200) {
+            return { success: true, count: res.data?.count || 0, message: res.data.message };
+        } else {
+            return {
+                success: false,
+                message: res.data.message || "Internal Server Error",
+                count: res.data?.count || 0
+            };
+        }
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error?.message || "Internal Server Error",
+            count:  0
+        };
+    }
+}

@@ -5,9 +5,11 @@ import GenderToggle from './GenderToggle'
 import MobileGenderButtons from './MobileGenderButtons'
 import {  ShoppingCart, User } from 'lucide-react'
 import { ProductSearchToggle } from './ProductSearchToggle'
+import CartCount from './CartCount'
 
 export default async function Header({hideOptions = false}: {hideOptions?: boolean}) {
   const res = await auth()
+
   return (
     <>
       {/* <MobileGenderButtons /> */}
@@ -23,8 +25,11 @@ export default async function Header({hideOptions = false}: {hideOptions?: boole
           {
             (res?.user && !hideOptions) ? <>
             <ProductSearchToggle />
-            <Link href="/cart" className='text-gray-600  flex flex-row items-center justify-centergrow md:mx-0.5 mx-1.5'>
-            <ShoppingCart size={20} color='#4b5563' /></Link>
+            <Link href="/cart" className='text-gray-600  flex flex-row items-center justify-center  grow md:mx-0.5 mx-1.5 relative'>
+
+            <ShoppingCart size={20} color='#4b5563' />
+            <CartCount />
+            </Link>
             <Link href="/profile" className='text-gray-600 flex flex-row items-center justify-center grow md:mx-0.5 mx-1.5'>
             <User size={20} color='#4b5563' className='text-gray-600 '/></Link>
             </>: <><ProductSearchToggle /><PublicNavigator /></>
