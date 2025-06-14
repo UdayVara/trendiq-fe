@@ -1,4 +1,16 @@
-import { Category } from "./category";
+import { Size } from "./size";
+
+export interface CartItem {
+    id:                  string;
+    productId:           string;
+    userId:              string;
+    quantity:            number;
+    product_inventoryId: string;
+    createdAt:           Date;
+    updatedAt:           Date;
+    product:             Product;
+    product_inventory:   ProductInventory;
+}
 
 export interface Product {
     id:                string;
@@ -14,8 +26,6 @@ export interface Product {
     updatedAt:         Date;
     publicId:          string;
     imageUrl:          string;
-    product_inventory: ProductInventory[];
-    category:          Category;
 }
 
 export interface ProductInventory {
@@ -26,11 +36,15 @@ export interface ProductInventory {
     stock:         number;
     minimum_stock: number;
     discount:      number;
+    size:          Size;
+}
+
+export interface CartSummary {
+    amount:      number;
+    discount:    number;
+    finalAmount: number;
+    gst:         number;
 }
 
 
-export interface SearchedProduct {
-    id:       string;
-    imageUrl: string;
-    title:    string;
-}
+

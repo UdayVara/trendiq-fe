@@ -20,6 +20,7 @@ export default async function ProductListing({
   const categoryQuery = params.category;
   const defaultPageSize = 4;
   const data = await axiosInstance.get(`/product?page=1&size=${defaultPageSize}&userEmail=${user?.user?.email}&gender=${cookieStore.get("gender")?.value || "male"}&categoryId=${categoryQuery || ""}`);
+  console.log(data?.data?.wishlist,"data");
   return (
     // <TransitionProvider>
 

@@ -63,7 +63,7 @@ useEffect(() => {
             <CarouselPrevious className="md:inline-flex hidden"/>
             <CarouselNext className="md:inline-flex hidden"/>
           </Carousel>}
-        {  data?.data?.length > 0 && <Carousel  setApi={setApi}>
+        {data?.data &&  data?.data?.length > 0 && <Carousel  setApi={setApi}>
             <CarouselContent>
               {data?.data?.map((product:any,index:any) => (
                 <CarouselItem key={index} className="lg:basis-1/4 select-none md:basis-1/3  sm:basis-1/2">
@@ -100,7 +100,7 @@ router.push("/product/"+product.id+"")
             <CarouselNext className="md:inline-flex hidden"/>
           </Carousel>}
           {
-            data?.data?.length > 1 && (
+            data?.data && data?.data?.length > 1 && (
               <div className="flex md:hidden  items-center justify-center mt-4 gap-4">
                 {Array.from({ length: data?.data?.length > 5 ? 5 : data?.data?.length }).map((_, index) => (
                     <span onClick={() => {api?.scrollTo(index)}} key={index} className={`w-3 cursor-pointer shrink-0 h-3 rounded-full  ${current == index +1 ? "bg-gray-500" : "bg-gray-200"} `}></span>

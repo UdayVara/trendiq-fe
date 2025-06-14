@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/axios";
+import { Category } from "@/types/category";
 
 export const getCategories = async (gender:string) => {
   try {
@@ -6,7 +7,7 @@ export const getCategories = async (gender:string) => {
     if (res.data.statusCode == 200) {
       return {
         success: true,
-        data: res.data?.data || [],
+        data: res.data?.data as Category[] || [],
         message: res.data.message,
       };
     } else {

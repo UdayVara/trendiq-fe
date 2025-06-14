@@ -19,6 +19,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const queryClient = useQueryClient();
   const user = useSession();
   // Add to Wishlist Mutation
+  console.log("wishlist",product?.wishlist);
   const addWishlistMutation = useMutation({
     mutationFn: createWishlist,
     onSuccess: async(res) => {

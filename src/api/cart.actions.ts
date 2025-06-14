@@ -1,4 +1,6 @@
 import axiosInstance from "@/lib/axios";
+import { Address } from "@/types/address";
+import { CartItem, CartSummary } from "@/types/cart";
 
 export const getCart = async () => {
     try {
@@ -13,10 +15,10 @@ export const getCart = async () => {
   if (res.data.statusCode == 200) {
     return {
       success: true,
-      data: res.data?.data || [],
-      addresses:res.data?.addresses || [],
-      message: res.data.message,
-      cartSummary:res.data?.cartSummary || null
+      data: res.data?.data as CartItem[] || [],
+      addresses:res.data?.addresses as Address[] || [],
+      message: res.data.message ,
+      cartSummary:res.data?.cartSummary as CartSummary || null
     };
   } else {
     return {

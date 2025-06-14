@@ -1,5 +1,5 @@
 "use client";
-import { product } from "@/types/product";
+import { Product } from "@/types/product";
 import React, { useEffect, useRef, useState } from "react";
 import Filters from "./Filters";
 import { getProducts } from "@/api/product.actions";
@@ -16,7 +16,7 @@ function ProductsContainer({
   defaultPageSize,
   totalResults,
 }: {
-  data: product[];
+  data: Product[];
   wishlist: any[];
   defaultPageSize: number;
   totalResults: number;
@@ -46,7 +46,7 @@ function ProductsContainer({
         getCookie("gender") || "male",
         form.getValues("category")
       ),
-    initialData: { success: true, message: "", data: data, wishlist: [] },
+    initialData: { success: true, message: "", data: data as Product[], wishlist: [] },
     staleTime: 60 * 1000,
   });
 
