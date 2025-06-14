@@ -39,7 +39,7 @@ export default function Hero() {
           jump:false,
           stopOnMouseEnter:true,
           
-        }),
+        }) as any,
       ]} setApi={setApi} className=" relative w-full h-min">
         <CarouselContent className=" relative w-full ml-0">
           {data?.banner &&
