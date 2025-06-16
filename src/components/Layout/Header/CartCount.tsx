@@ -5,7 +5,7 @@ import React from 'react'
 
 function CartCount() {
     const cartCountData = useQuery({
-        queryKey:['user-cart'],
+        queryKey:['user-cart-count'],
         queryFn: () => getCartCount(),
         staleTime: 60 * 1000 * 60
     })

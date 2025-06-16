@@ -6,20 +6,20 @@ import MobileGenderButtons from './MobileGenderButtons'
 import {  ShoppingCart, User } from 'lucide-react'
 import { ProductSearchToggle } from './ProductSearchToggle'
 import CartCount from './CartCount'
+import RightSideNavbar from './RightSideNavbar'
 
 export default async function Header({hideOptions = false}: {hideOptions?: boolean}) {
   const res = await auth()
-
   return (
     <>
       {/* <MobileGenderButtons /> */}
-    <header className="border-b flex flex-col w-full bg-white relative">
+    <header className="border-b flex h-16 items-end flex-col w-full bg-white relative">
       <div className="container  top-0  mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-red-600">
           TrendIQ
         </Link>
          
-        <nav className="flex items-center gap-2 lg:gap-4">
+        <RightSideNavbar>
           <GenderToggle />
          
           {
@@ -34,7 +34,7 @@ export default async function Header({hideOptions = false}: {hideOptions?: boole
             <User size={20} color='#4b5563' className='text-gray-600 '/></Link>
             </>: <><ProductSearchToggle /><PublicNavigator /></>
           }
-        </nav>
+        </RightSideNavbar>
       </div>
       <MobileGenderButtons />
     </header>

@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import axiosInstance from "@/lib/axios";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { QueryObserverResult, RefetchOptions, useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   name: z.string(),
@@ -53,6 +53,7 @@ function AddEditAddressDialog({
 
   });
 
+  const queryClient = useQueryClient();
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       if (address) {
@@ -65,6 +66,9 @@ function AddEditAddressDialog({
               setOpen(false)
               toast.success(res?.data?.message || "Address Added Successfully");
               form.reset()
+              await queryClient.invalidateQueries({
+          queryKey: ["addresses"],
+        })
               refetch()
           } else {
             toast.error(res.data?.message || "Internal Server Error");

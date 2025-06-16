@@ -53,10 +53,12 @@ function Details({ product }: { product: any }) {
           (item:any) => item.size.id == selectedSize
         ).id,
       });
-      console.log(response.data)
       if (response.data?.statusCode == 201) {
         router.refresh()
         toast.success(response.data.message || "Product Added Successfully");
+        await queryClient.invalidateQueries({
+          queryKey: ["user-cart-count"],
+        })
       } else {
         toast.error(response.data.message || "Something went wrong");
       }

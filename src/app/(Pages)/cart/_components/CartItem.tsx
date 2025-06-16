@@ -29,6 +29,9 @@ export default function CartItem({ item }: any) {
       const res = await axiosInstance.delete(`/cart/${item.id}`);
       if (res.data?.statusCode == 201) {
         await queryClient.invalidateQueries({ queryKey: ["cart"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["user-cart-count"],
+        })
         toast.success(`Item removed successfully`);
       } else {
         toast.error(res.data.message || "Something went wrong");

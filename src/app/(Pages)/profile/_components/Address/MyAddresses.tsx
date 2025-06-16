@@ -30,7 +30,7 @@ export default function MyAddresses() {
       const res = await axiosInstance.delete(`address/${addressId}`);
       if (res.data?.statusCode == 201) {
         toast.success(res?.data?.message || "Address Deleted Successfully");
-        query.invalidateQueries({ queryKey: ["addresses"] });
+        await query.invalidateQueries({ queryKey: ["addresses"] });
       } else {
         toast.error(res?.data?.message || "Something went wrong");
       }
@@ -43,10 +43,10 @@ export default function MyAddresses() {
     mutationFn: async (addressId: string) => {
       return axiosInstance.patch(`address/default/${addressId}`);
     },
-    onSuccess: (res) => {
+    onSuccess: async(res) => {
       if (res.data?.statusCode == 201) {
         toast.success(res?.data?.message || "Address Updated Successfully");
-        query.invalidateQueries({ queryKey: ["addresses"] });
+        await query.invalidateQueries({ queryKey: ["addresses"] });
       } else {
         toast.error(res?.data?.message || "Something went wrong");
       }
