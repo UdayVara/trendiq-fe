@@ -13,7 +13,7 @@ export default async function Header({hideOptions = false}: {hideOptions?: boole
   return (
     <>
       {/* <MobileGenderButtons /> */}
-    <header className="border-b flex h-16 items-end flex-col w-full bg-white relative">
+    <header className="border-b flex max-h-max items-end flex-col w-full bg-white relative">
       <div className="container  top-0  mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-red-600">
           TrendIQ

@@ -30,6 +30,7 @@ import PageContainer from "@/components/Layout/PageContainer";
 import { useEffect, useState } from "react";
 import { signOutAction } from "@/actions/auth.actions";
 import TransitionProvider from "@/Providers/TransitionProvider/FramerMotionTransitionProvider";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 export default function ProfilePage() {
   const [isOpen, setOpen] = useState(false);
@@ -60,8 +61,12 @@ export default function ProfilePage() {
   return (
     <TransitionProvider>
     <PageContainer>
-      <div className="mb-6 pb-20  bg-[#fafafa] mt-4">
-        <div className=" text-white pb-12 pt-7 mb-6">
+      <div className="mb-6 pb-20 mt-6  bg-transparent border-none">
+        <EllipsisVertical
+              onClick={() => setOpen(!isOpen)}
+              className="lg:hidden block ml-auto text-primary mr-4 text-3xl"
+            />
+        {/* <div className=" text-white pb-12 pt-7 mb-6">
           <div className="container mx-auto flex flex-row items-center justify-between gap-x-14">
             <div>
               <h1 className="lg:text-4xl text-3xl text-black font-medium">
@@ -76,9 +81,9 @@ export default function ProfilePage() {
               className="lg:hidden block text-primary mr-4 text-3xl"
             />
           </div>
-        </div>
+        </div> */}
 
-        <div className="lg:block hidden container mx-auto  -mt-12">
+        <div className="lg:block hidden container mx-auto  ">
           <Tabs
             defaultValue="info"
             className="flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-10rem)] items-stretch"
@@ -235,83 +240,77 @@ export default function ProfilePage() {
             </div>
           </Tabs>
         </div>
-        <div className={` container border-t-2 lg:hidden block border-t-gray-400  mx-auto  -mt-10 pt-4`}>
+        <div className={` container  lg:hidden block -mt-2 mx-auto   pt-4`}>
           <Tabs
             defaultValue="info"
             className={`flex flex-col lg:flex-row ${
               isOpen ? "gap-6" : "gap-0"
             }  `}
           >
-            <Card
-              className={`lg:w-64 ${
-                isOpen
-                  ? "scale-y-100 opacity-100 max-h-[500px] "
-                  : "scale-y-0 opacity-0 max-h-0"
-              } origin-top transition-all duration-300 ease-in-out overflow-hidden border-none shadow-lg`}
+             <Sheet open={isOpen}  onOpenChange={setOpen}>
+      <SheetContent side="right" className="w-64 origin-right bg-muted min-h-full  p-0">
+        <div className="h-full bg-white rounded-none min-h-full -mt-14">
+          <TabsList className="flex flex-col min-h-full w-full h-full space-y-4 p-2">
+            <TabsTrigger
+              value="info"
+              className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              onClick={() => setOpen(false)}
             >
-              <CardContent className="p-0 flex-grow min-h-full h-full bg-white rounded-b-lg">
-                <TabsList
-                  className={` flex flex-col w-full min-h-full highlighted-list h-full space-y-4 p-2 `}
-                >
-                  <TabsTrigger
-                    value="info"
-                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={()=>{setOpen(false)}}
-                  >
-                    <UserCircle className="h-5 w-5 mr-2" />
-                    Info
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="update"
-                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={()=>{setOpen(false)}}
-                  >
-                    <Settings className="h-5 w-5 mr-2" />
-                    Update Profile
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="orders"
-                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={()=>{setOpen(false)}}
-                  >
-                    <ShoppingBag className="h-5 w-5 mr-2" />
-                    My Orders
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="addresses"
-                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={()=>{setOpen(false)}}
-                  >
-                    <MapPin className="h-5 w-5 mr-2" />
-                    My Addresses
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="wishlist"
-                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={()=>{setOpen(false)}}
-                  >
-                    <Heart className="h-5 w-5 mr-2" />
-                    Wishlist
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="support"
-                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={()=>{setOpen(false)}}
-                  >
-                    <LifeBuoy className="h-5 w-5 mr-2" />
-                    Support
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="terms"
-                    className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={()=>{setOpen(false)}}
-                  >
-                    <FileText className="h-5 w-5 mr-2" />
-                    Terms
-                  </TabsTrigger>
-                </TabsList>
-              </CardContent>
-            </Card>
+              <UserCircle className="h-5 w-5 mr-2" />
+              Info
+            </TabsTrigger>
+            <TabsTrigger
+              value="update"
+              className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              onClick={() => setOpen(false)}
+            >
+              <Settings className="h-5 w-5 mr-2" />
+              Update Profile
+            </TabsTrigger>
+            <TabsTrigger
+              value="orders"
+              className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              onClick={() => setOpen(false)}
+            >
+              <ShoppingBag className="h-5 w-5 mr-2" />
+              My Orders
+            </TabsTrigger>
+            <TabsTrigger
+              value="addresses"
+              className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              onClick={() => setOpen(false)}
+            >
+              <MapPin className="h-5 w-5 mr-2" />
+              My Addresses
+            </TabsTrigger>
+            <TabsTrigger
+              value="wishlist"
+              className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              onClick={() => setOpen(false)}
+            >
+              <Heart className="h-5 w-5 mr-2" />
+              Wishlist
+            </TabsTrigger>
+            <TabsTrigger
+              value="support"
+              className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              onClick={() => setOpen(false)}
+            >
+              <LifeBuoy className="h-5 w-5 mr-2" />
+              Support
+            </TabsTrigger>
+            <TabsTrigger
+              value="terms"
+              className="w-full justify-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              onClick={() => setOpen(false)}
+            >
+              <FileText className="h-5 w-5 mr-2" />
+              Terms
+            </TabsTrigger>
+          </TabsList>
+        </div>
+      </SheetContent>
+    </Sheet>
             <div className="flex-grow h-full mt-4">
               <TabsContent value="info" className="h-full bg-transparent mt-0">
                 <Card className="h-full p-0 bg-transparent border-none shadow-lg">

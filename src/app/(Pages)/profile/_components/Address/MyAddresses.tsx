@@ -158,6 +158,7 @@ export default function MyAddresses() {
         setOpen={setOpen}
         address={selectedAddress}
         refetch={refetch}
+        setSelectedAddress={setSelectedAddress}
       />
     </>
   );

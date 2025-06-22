@@ -36,11 +36,13 @@ function AddEditAddressDialog({
   open,
   setOpen,
   address,
-  refetch
+  refetch,
+  setSelectedAddress
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   address?: any | null;
+  setSelectedAddress: Dispatch<SetStateAction<any>>;
   refetch:(options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -100,6 +102,10 @@ function AddEditAddressDialog({
       open={open}
       onOpenChange={(open) => {
         setOpen(open);
+        if(address){
+          setSelectedAddress(null)
+        }
+        form.reset();
       }}
     >
       <DialogContent>

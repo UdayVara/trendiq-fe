@@ -14,7 +14,7 @@ function MobileGenderButtons() {
   return (
     <>
        {(path == "/" || path == "/products") && 
-        <div className="relative bg-gray-100 md:hidden block rounded-2xl p-1">
+        <div className="relative w-full bg-gray-100 md:hidden block rounded-2xl p-1">
             {/* Sliding background */}
             <div
               className={`absolute top-1 bottom-1 w-1/2 bg-white rounded-2xl shadow-sm transition-transform duration-300 ${
