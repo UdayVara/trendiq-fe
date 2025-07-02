@@ -23,6 +23,9 @@ function Details({ product }: { product: any }) {
   const [selectedVariant, setSelectedVariant] = useState(
     product.product_inventory[0]
   );
+  const [selectedCart,setSelectedCart] = useState(
+    product?.cart?.find((item : any) => item?.product_inventoryId == product?.product_inventory[0]) ?  product?.cart?.find((item : any) => item?.product_inventoryId == product?.product_inventory[0]) : product?.cart?.[0]
+  )
   const colors = product?.availableColors || [];
 
   const sizes = [...product.product_inventory];
@@ -147,9 +150,16 @@ function Details({ product }: { product: any }) {
             value={selectedSize}
             onValueChange={(value) => {
               setSelectedSize(value);
-              setSelectedVariant(
-                product.product_inventory.find(
+              const product_inventory_variant = product.product_inventory.find(
                   (item: any) => item.size.id === value
+                )
+              setSelectedVariant(
+                product_inventory_variant
+              );
+
+              setSelectedCart(
+                product.cart.find(
+                  (item: any) => item.product_inventoryId === product_inventory_variant?.id
                 )
               );
             }}
@@ -189,8 +199,8 @@ function Details({ product }: { product: any }) {
           <h4 className="text-green-600  text-lg font-semibold">In Stock</h4>
         )
       )}
-      {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ? product?.cart?.product_inventoryId == selectedVariant?.id ? <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={()=>{
-        handleDeleteCartItem(product?.cart?.id)
+      {user?.data?.user?.email != null || user?.data?.user?.email != undefined  ? selectedCart?.product_inventoryId == selectedVariant?.id ? <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={()=>{
+        handleDeleteCartItem(selectedCart?.id)
       }}>
         {!btnLoading ? "Remove From Cart" : <DotButtonLoader  isPrimary={true}/>}
       </Button> : <Button size="lg" variant={'outline'} className="w-full text-primary" disabled={selectedVariant?.stock  <= selectedVariant?.minimum_stock} onClick={addProductToCart}>
