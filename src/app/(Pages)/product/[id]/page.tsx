@@ -5,6 +5,7 @@ import ImageGallery from './_components/ImageGallery'
 import PageContainer from '@/components/Layout/PageContainer'
 import { auth } from '@/auth'
 import TransitionProvider from '@/Providers/TransitionProvider/FramerMotionTransitionProvider'
+import { SingleProduct } from '@/types/product'
 export default async  function ProductPage({params}:any) {
   const {id} = await params
   const user = await auth()
@@ -19,7 +20,7 @@ export default async  function ProductPage({params}:any) {
         <ImageGallery images={[...product.data.data.product_images]} />
 
         {/* Product Details */}
-        <Details product={product.data.data}/>
+        <Details product={product.data.data as SingleProduct}/>
       </div>
     </PageContainer>
     </div>

@@ -1,4 +1,5 @@
 "use client";
+import { getSingleProudct } from "@/api/product.actions";
 import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
 import DotButtonLoader from "@/components/Layout/Loader/DotButtonLoader";
 import { Button } from "@/components/ui/button";
@@ -6,21 +7,33 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axiosInstance from "@/lib/axios";
-import { useQueryClient } from "@tanstack/react-query";
+import { ProductInventory } from "@/types/cart";
+import { SingleProduct } from "@/types/product";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-function Details({ product }: { product: any }) {
+function Details(data: { product: SingleProduct }) {
+  const {id} = useParams()
+  const initialProductData = data.product
+  const user = useSession()
+    const QueryData = useQuery({
+    queryKey: ["product",id],
+    queryFn: () => getSingleProudct(id as string,user?.data?.user?.email  as string || null),
+    initialData:{success:true,data:initialProductData,message:"Product Fetched Successfully"},
+  })
+
+  const product = QueryData?.data?.data as SingleProduct
   const [selectedSize, setSelectedSize] = useState(
     product.product_inventory[0].size.id
   );
+
   const [btnLoading,setBtnLoading] = useState(false)
-  const user = useSession()
-  const [selectedVariant, setSelectedVariant] = useState(
+  const [selectedVariant, setSelectedVariant] = useState<ProductInventory>(
     product.product_inventory[0]
   );
   const [selectedCart,setSelectedCart] = useState(
@@ -52,12 +65,15 @@ function Details({ product }: { product: any }) {
       const response = await axiosInstance.post("/cart", {
         productId: product.id,
         quantity: 1,
-        inventoryId: product.product_inventory?.find(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        inventoryId: product?.product_inventory?.find(
           (item:any) => item.size.id == selectedSize
         ).id,
       });
       if (response.data?.statusCode == 201) {
-        router.refresh()
+        setSelectedCart(response?.data?.data)
+        await queryClient.refetchQueries({ queryKey: ["product", id] });
         toast.success(response.data.message || "Product Added Successfully");
         await queryClient.invalidateQueries({
           queryKey: ["user-cart-count"],
@@ -78,8 +94,11 @@ function Details({ product }: { product: any }) {
     try {
       const res = await axiosInstance.delete(`/cart/${id}`);
       if (res.data?.statusCode == 201) {
-        router.refresh();
-        await queryClient.invalidateQueries({ queryKey: ["cart"] });
+        await queryClient.refetchQueries({ queryKey: ["product", id] });
+        await queryClient.invalidateQueries({
+          queryKey: ["user-cart-count"],
+        })
+        setSelectedCart(undefined)
         toast.success(`Item removed successfully`);
       } else {
         toast.error(res.data.message || "Something went wrong");
@@ -152,7 +171,7 @@ function Details({ product }: { product: any }) {
               setSelectedSize(value);
               const product_inventory_variant = product.product_inventory.find(
                   (item: any) => item.size.id === value
-                )
+                ) as ProductInventory
               setSelectedVariant(
                 product_inventory_variant
               );

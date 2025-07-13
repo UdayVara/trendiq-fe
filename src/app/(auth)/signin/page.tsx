@@ -11,6 +11,8 @@ import { signinAction } from "@/actions/auth.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useState } from "react";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -28,6 +30,7 @@ export default function SignInPage() {
     },
   });
   const {update} = useSession()
+  const [showPassword,setShowPassword] = useState(false)
 const router = useRouter()
   const onSubmit = async(data: SignInFormData) => {
     try {
@@ -87,25 +90,30 @@ const router = useRouter()
                 )}
               />
 
-              {/* Password Field */}
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="••••••"
-                        {...field}
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500  sm:text-sm"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+               <FormItem>
+                <Label htmlFor="password">Password</Label>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      {...form.register('password')}
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOffIcon className="h-5 w-5 text-gray-500" />
+                      ) : (
+                        <EyeIcon className="h-5 w-5 text-gray-500" />
+                      )}
+                    </button>
+                  </div>
+                </FormControl>
+                <FormMessage>{form.formState.errors.password?.message}</FormMessage>
+              </FormItem>
 
               {/* Remember Me */}
               <div className="flex items-center justify-between">
