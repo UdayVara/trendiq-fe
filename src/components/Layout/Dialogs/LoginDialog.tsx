@@ -28,7 +28,7 @@ function LoginDialog({variant,text,isCustom=false}:{variant:"link" | "default" |
       <DialogTitle>Login Required</DialogTitle>
       <DialogDescription>
         Looks like you are not logged in.
-        <Link href="/signin" className="text-red-600 hover:text-red-700 hover:bg-red-50">Sign </Link>in to your account or <Link href="/signin" className="text-red-600 hover:text-red-700 hover:bg-red-50">Create One</Link>.
+        <Link href="/signin" className="text-red-600 hover:text-red-700 hover:bg-red-50">Sign in</Link> to your account or <Link href="/signin" className="text-red-600 hover:text-red-700 hover:bg-red-50">Create One</Link>.
       </DialogDescription>
     </DialogHeader>
   </DialogContent>
