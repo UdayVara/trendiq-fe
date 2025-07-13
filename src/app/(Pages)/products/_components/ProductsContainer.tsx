@@ -52,9 +52,10 @@ function ProductsContainer({
   useEffect(() => {
   if (response.isSuccess && data) {
     // 
+    console.log("Inside data count", response.data?.totalCount);
     setTotal(response.data?.totalCount);
   }
-}, [response.isSuccess]);
+}, [response.isSuccess,response]);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -63,7 +64,7 @@ function ProductsContainer({
 
     timeoutRef.current = setTimeout(async() => {
       setPage(1);
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: [
           "products",
           form.getValues("search"),
@@ -144,8 +145,8 @@ function ProductsContainer({
           
             <InfiniteScroll
               next={fetchNextPageData}
+              scrollThreshold={0.5}
               dataLength={response?.data?.data?.length}
-              
               className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 gap-3 w-full pb-20"
               hasMore={total > response?.data?.data?.length || false}
               loader={
