@@ -17,20 +17,25 @@ import { UseFormReturn } from "react-hook-form";
 
 function Filters({
   handleFilter,
-  form:{register,setValue,reset}
+  form: { register, setValue, reset },
 }: {
-  handleFilter: (
-    
-  ) => void;
-  form:UseFormReturn<{
-    search: string;
-    category: string;
-}, any, undefined>
+  handleFilter: () => void;
+  form: UseFormReturn<
+    {
+      search: string;
+      category: string;
+    },
+    any,
+    undefined
+  >;
 }) {
   const gender = getCookie("gender") || "male";
-  const {data,isLoading} = useQuery({queryKey:["categories"],queryFn:() => getCategories(gender),staleTime:2*60*60*1000})
+  const { data, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => getCategories(gender),
+    staleTime: 2 * 60 * 60 * 1000,
+  });
 
-  
   return (
     <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
       <div className="relative flex-1 w-full">
@@ -40,14 +45,12 @@ function Filters({
           className="pl-10"
           {...register("search")}
           onChange={(e) => {
-            
             setValue("search", e.target.value);
             handleFilter();
           }}
         />
       </div>
       <div className="flex gap-4 w-full md:w-auto">
-       
         <Select
           //   value={filters.category}
           {...register("category")}
@@ -55,22 +58,32 @@ function Filters({
             setValue("category", value);
             handleFilter();
           }}
-          
         >
           <SelectTrigger className="w-full grow">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-           {
-            isLoading ? <SelectItem value="loading">Loading...</SelectItem> : data?.data && data?.data?.length > 0 && data?.data?.map((item: any) => <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>)
-           }
+            {isLoading ? (
+              <SelectItem value="loading">Loading...</SelectItem>
+            ) : (
+              data?.data &&
+              data?.data?.length > 0 &&
+              data?.data?.map((item: any) => (
+                <SelectItem key={item.id} value={item.id}>
+                  {item.name}
+                </SelectItem>
+              ))
+            )}
           </SelectContent>
         </Select>
         <Button
           variant="outline"
           onClick={() => {
-            reset()
+            const url = new URL(window.location.href);
+            url.searchParams.delete("category");
+            window.history.replaceState({}, "", url.toString());
+            reset();
             handleFilter();
           }}
           className="bg-white w-ful grow text-red-600 border-red-600 hover:bg-red-50"

@@ -40,9 +40,9 @@ const router = useRouter()
       const res = await signinAction(data);
 
       if(res.success){
-        toast.success(res.message)
         form.reset();
         await update()
+        toast.success(res.message)
         router.push('/')
       }else{
         toast.error(res.message)

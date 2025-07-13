@@ -71,6 +71,9 @@ function AddEditAddressDialog({
               await queryClient.invalidateQueries({
           queryKey: ["addresses"],
         })
+              await queryClient.refetchQueries({
+          queryKey: ["addresses"],
+        })
               refetch()
           } else {
             toast.error(res.data?.message || "Internal Server Error");
@@ -84,6 +87,12 @@ function AddEditAddressDialog({
             setOpen(false)
             toast.success(res?.data?.message || "Address Added Successfully");
             form.reset()
+            await queryClient.invalidateQueries({
+          queryKey: ["addresses"],
+        })
+              await queryClient.refetchQueries({
+          queryKey: ["addresses"],
+        })
             refetch()
         } else {
           toast.error(res.data?.message || "Internal Server Error");

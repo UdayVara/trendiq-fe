@@ -10,13 +10,13 @@ export const getProducts = async (page = 1,pageSize?:number,search?:string | nul
     const user = await getUserClient()
     const res = await axiosInstance.get(`/product?page=${page}&size=${pageSize}&search=${search}&gender=${gender != "all" ? gender : ""}&categoryId=${category != "all" ? category : ""}${user?.user?.email? `&userEmail=${user?.user?.email}` : ""}`);
     if (res.data.statusCode == 200) {
-      return { success: true, data: res.data?.data as Product[] || [], message: res.data.message,wishlist:res.data.wishlist as Wishlist[] || [] };
+      return { success: true, data: res.data?.data as Product[] || [], message: res.data.message,wishlist:res.data.wishlist as Wishlist[] || [],totalCount:res.data.totalCount };
     } else {
       return {
         success: false,
         message: res.data.message || "Internal Server Error",
         data:[],
-        wishlist:[]
+        wishlist:[],totalCount:0
       };
     }
   } catch (error: any) {
@@ -25,7 +25,7 @@ export const getProducts = async (page = 1,pageSize?:number,search?:string | nul
       success: false,
       message: error.message || "Internal Server Error",
       data:[],
-      wishlist:[]
+      wishlist:[],totalCount:0
     };
   }
 };

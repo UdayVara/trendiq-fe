@@ -127,7 +127,7 @@ function Details(data: { product: SingleProduct }) {
           </div>
           <span className="text-muted-foreground">(128 reviews)</span>
         </div>
-        <p className="text-2xl font-medium mt-4">₹ {(selectedVariant?.price - (selectedVariant?.price * selectedVariant?.discount/100))?.toFixed(2)} <span className="text-muted-foreground text-xl font-regular line-through">{selectedVariant?.price?.toFixed(2)}</span><span className="text-xl text-green-600"> ({selectedVariant?.discount}%)</span></p>
+        <p className="text-2xl font-medium mt-4">₹ {Math.floor(selectedVariant?.price - (selectedVariant?.price * selectedVariant?.discount/100))?.toFixed(2)} <span className="text-muted-foreground text-xl font-regular line-through">{selectedVariant?.price?.toFixed(2)}</span><span className="text-xl text-green-600"> ({selectedVariant?.discount}%)</span></p>
       </div>
 
       <div className="space-y-4">

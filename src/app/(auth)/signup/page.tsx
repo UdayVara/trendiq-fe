@@ -54,9 +54,9 @@ export default function SignUpPage() {
       const res = await signupAction(data);
 
       if(res.success){
-        toast.success(res.message)
         form.reset();
         await update()
+        toast.success(res.message)
         router.push('/')
       }else{
         toast.error(res.message)

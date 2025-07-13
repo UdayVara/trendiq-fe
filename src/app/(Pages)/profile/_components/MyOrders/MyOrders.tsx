@@ -63,7 +63,7 @@ export default function MyOrders() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.data?.map((order:any) => (
+        {data?.data?.length <= 0 ? <TableRow className="hover:bg-transparent"><TableCell colSpan={6}> <h5 className="text-center mt-4 w-full">No Orders Found</h5> </TableCell></TableRow> : data?.data?.map((order:any) => (
           <TableRow key={order.orderId} className="hover:bg-transparent">
             <TableCell>{order.orderId}</TableCell>
             <TableCell>{moment(order.date).format("DD-MM-YYYY")}</TableCell>

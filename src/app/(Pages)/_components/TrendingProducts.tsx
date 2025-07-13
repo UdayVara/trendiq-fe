@@ -86,7 +86,7 @@ router.push("/product/"+product.id+"")
                           {product?.category?.name}
                         </Badge>
                         <span className="text-lg font-medium  mt-2 pl-0.5">
-                        ₹ {(product.product_inventory[0].price - (product.product_inventory[0].price * product.product_inventory[0].discount)/100)} <span className="ms-3 text-sm line-through text-neutral-500 font-thin">{product.product_inventory[0].price}</span>
+                        ₹ {Math.floor(product.product_inventory[0].price - (product.product_inventory[0].price * product.product_inventory[0].discount)/100)} <span className="ms-3 text-sm line-through text-neutral-500 font-thin">{product.product_inventory[0].price}</span>
                         </span>
                         
                       </div>

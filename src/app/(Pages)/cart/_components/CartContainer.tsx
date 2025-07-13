@@ -7,6 +7,7 @@ import OrderSummary from "./OrderSummary";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import axiosInstance from "@/lib/axios";
 
 function CartContainer({
   data,
@@ -30,6 +31,13 @@ function CartContainer({
   console.log("result",cartRes?.data?.data?.some(
       (item: any) =>
         item.product_inventory?.stock < item.product_inventory?.minimum_stock))
+
+  const addressData = useQuery({
+    queryKey: ["addresses"],
+    queryFn: () => {
+      return axiosInstance.get("address").then((res) => res.data);
+    },
+  });
   return (
     <>
       {cartRes.data.data?.length == 0 ? (
@@ -64,7 +72,7 @@ function CartContainer({
       (item: any) =>
         item.product_inventory?.stock < item.product_inventory?.minimum_stock
     ) || false
-  } cartItems={cartRes?.data?.data} addresses={cartRes?.data?.addresses} cartSummary={cartRes?.data?.cartSummary}/>
+  } cartItems={cartRes?.data?.data} addresses={addressData.data?.data} cartSummary={cartRes?.data?.cartSummary}/>
         </div>
       )}
     </>

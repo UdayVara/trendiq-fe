@@ -9,8 +9,7 @@ import ProductCard from "./ProductItem";
 import { getCookie } from "@/lib/cookie";
 import { RefreshCw, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import InfiniteScroll from "react-infinite-scroller";
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 function ProductsContainer({
   data,
   defaultPageSize,
@@ -46,19 +45,25 @@ function ProductsContainer({
         getCookie("gender") || "male",
         form.getValues("category")
       ),
-    initialData: { success: true, message: "", data: data as Product[], wishlist: [] },
+    initialData: { success: true, message: "", data: data as Product[], wishlist: [],totalCount:totalResults },
     staleTime: 60 * 1000,
   });
+
+  useEffect(() => {
+  if (response.isSuccess && data) {
+    // 
+    setTotal(response.data?.totalCount);
+  }
+}, [response.isSuccess]);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleFilter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = setTimeout(async() => {
       setPage(1);
-      setTotal(0);
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: [
           "products",
           form.getValues("search"),
@@ -138,10 +143,10 @@ function ProductsContainer({
         ) : (
           
             <InfiniteScroll
-              pageStart={0}
-              threshold={700}
+              next={fetchNextPageData}
+              dataLength={response?.data?.data?.length}
+              
               className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 gap-3 w-full pb-20"
-              loadMore={() =>setTimeout(() => fetchNextPageData(),200)}
               hasMore={total > response?.data?.data?.length || false}
               loader={
                 <>
