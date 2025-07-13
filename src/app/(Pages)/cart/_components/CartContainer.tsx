@@ -72,7 +72,7 @@ function CartContainer({
       (item: any) =>
         item.product_inventory?.stock < item.product_inventory?.minimum_stock
     ) || false
-  } cartItems={cartRes?.data?.data} addresses={addressData.data?.data} cartSummary={cartRes?.data?.cartSummary}/>
+  } cartItems={cartRes?.data?.data} addresses={addressData.data?.data || []} cartSummary={cartRes?.data?.cartSummary}/>
         </div>
       )}
     </>
