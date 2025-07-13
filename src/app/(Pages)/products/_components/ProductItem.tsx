@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createWishlist, deleteWishlist } from "@/api/wishlist.actions";
 import { useSession } from "next-auth/react";
 import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
 import { toast } from "sonner";
 import { Heart } from "lucide-react";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: any;
@@ -16,14 +17,15 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const user = useSession();
+  const [wishlistData,setWishlistData] = useState(product?.wishlist || null);
   // Add to Wishlist Mutation
   console.log("wishlist",product?.wishlist);
   const addWishlistMutation = useMutation({
     mutationFn: createWishlist,
     onSuccess: async(res) => {
-        await queryClient.invalidateQueries({ queryKey: ["products"] });
+        // await queryClient.invalidateQueries({ queryKey: ["products"] });
+        setWishlistData(res.data.data);
         toast.success(res.data.message || "Product Added to wishlist");
     },
     onError: (error: any) => {
@@ -35,7 +37,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const removeWishlistMutation = useMutation({
     mutationFn: deleteWishlist,
     onSuccess: async(res) => {
-        await queryClient.invalidateQueries({ queryKey: ["products"] });
+        // await queryClient.invalidateQueries({ queryKey: ["products"] });
+        setWishlistData(null);
         toast.success(res.data.message || "Product Removed from wishlist");
     },
     onError: (error: any) => {
@@ -79,7 +82,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         ) : (
           <>
           
-            {product?.wishlist?.length === 0 ? (
+            {wishlistData ? (
               <div className="w-8 h-8 rounded-full border-dashed border-primary">
 
               <Button
