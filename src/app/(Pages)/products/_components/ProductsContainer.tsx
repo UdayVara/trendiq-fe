@@ -167,7 +167,7 @@ function ProductsContainer({
             >
               
               {response?.data?.data?.map((product: any) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} wishListList = {response?.data?.wishlist} />
               ))}
             </InfiniteScroll>
           // </div>

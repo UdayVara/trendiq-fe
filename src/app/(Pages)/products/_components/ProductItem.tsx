@@ -10,22 +10,24 @@ import LoginDialog from "@/components/Layout/Dialogs/LoginDialog";
 import { toast } from "sonner";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { Wishlist } from "@/types/wishlist";
 
 interface ProductCardProps {
   product: any;
+  wishListList:Wishlist[]
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product,wishListList }) => {
   const router = useRouter();
   const user = useSession();
-  const [wishlistData,setWishlistData] = useState(product?.wishlist || null);
+  const [wishlistData,setWishlistData] = useState(wishListList.find((item) => item.productId == product.id) ? true : false);
   // Add to Wishlist Mutation
   console.log("wishlist",product?.wishlist);
   const addWishlistMutation = useMutation({
     mutationFn: createWishlist,
     onSuccess: async(res) => {
         // await queryClient.invalidateQueries({ queryKey: ["products"] });
-        setWishlistData(res.data.data);
+        setWishlistData(true);
         toast.success(res.data.message || "Product Added to wishlist");
     },
     onError: (error: any) => {
@@ -38,13 +40,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     mutationFn: deleteWishlist,
     onSuccess: async(res) => {
         // await queryClient.invalidateQueries({ queryKey: ["products"] });
-        setWishlistData(null);
-        toast.success(res.data.message || "Product Removed from wishlist");
+        setWishlistData(false);
+        toast.success(res?.data?.message || "Product Removed from wishlist");
     },
     onError: (error: any) => {
       toast.error(error?.message || "Something went wrong");
     },
   });
+
+  console.log("widhilist ldata",product.id,wishlistData)
 
   return (
     <Card key={product.id} className={`h-max min-h-full transition-all flex flex-col relative `}>
@@ -82,7 +86,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         ) : (
           <>
           
-            {wishlistData ? (
+            {wishlistData == false ? (
               <div className="w-8 h-8 rounded-full border-dashed border-primary">
 
               <Button
