@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
+import DotButtonLoader from "@/components/Layout/Loader/DotButtonLoader";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -31,8 +32,10 @@ export default function SignInPage() {
   });
   const {update} = useSession()
   const [showPassword,setShowPassword] = useState(false)
+  const [loading,setLoading] = useState(false)
 const router = useRouter()
   const onSubmit = async(data: SignInFormData) => {
+    setLoading(true);
     try {
       const res = await signinAction(data);
 
@@ -48,6 +51,7 @@ const router = useRouter()
     } catch (error:any) {
       toast.error(error.message || "Something went wrong");
     }
+    setLoading(false);
   };
 
   return (
@@ -142,7 +146,7 @@ const router = useRouter()
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                 >
-                  Sign in
+                                  {loading ? <DotButtonLoader  isPrimary={true}/> : "Sign up"}
                 </Button>
               </div>
             </form>

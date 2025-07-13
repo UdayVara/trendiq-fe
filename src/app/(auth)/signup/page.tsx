@@ -14,6 +14,7 @@ import { signupAction } from '@/actions/auth.actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import DotButtonLoader from '@/components/Layout/Loader/DotButtonLoader';
 
 // Validation Schema
 const signUpSchema = z
@@ -34,7 +35,7 @@ const signUpSchema = z
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -48,6 +49,7 @@ export default function SignUpPage() {
   const router = useRouter()
   const {update} = useSession()
   const onSubmit = async(data: z.infer<typeof signUpSchema>) => {
+    setLoading(true);
     try {
       const res = await signupAction(data);
 
@@ -63,6 +65,7 @@ export default function SignUpPage() {
     } catch (error:any) {
       toast.error(error.message || "Something went wrong");
     }
+    setLoading(false);
   };
 
   return (
@@ -190,7 +193,7 @@ export default function SignUpPage() {
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
-                Sign up
+                {loading ? <DotButtonLoader  isPrimary={true}/> : "Sign up"}
               </Button>
             </form>
           </Form>

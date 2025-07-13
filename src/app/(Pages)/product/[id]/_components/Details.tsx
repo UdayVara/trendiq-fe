@@ -73,8 +73,8 @@ function Details(data: { product: SingleProduct }) {
       });
       if (response.data?.statusCode == 201) {
         setSelectedCart(response?.data?.data)
-        await queryClient.refetchQueries({ queryKey: ["product", id] });
         toast.success(response.data.message || "Product Added Successfully");
+        await queryClient.refetchQueries({ queryKey: ["product", id] });
         await queryClient.invalidateQueries({
           queryKey: ["user-cart-count"],
         })
@@ -94,12 +94,12 @@ function Details(data: { product: SingleProduct }) {
     try {
       const res = await axiosInstance.delete(`/cart/${id}`);
       if (res.data?.statusCode == 201) {
+        setSelectedCart(undefined)
+        toast.success(`Item removed successfully`);
         await queryClient.refetchQueries({ queryKey: ["product", id] });
         await queryClient.invalidateQueries({
           queryKey: ["user-cart-count"],
         })
-        setSelectedCart(undefined)
-        toast.success(`Item removed successfully`);
       } else {
         toast.error(res.data.message || "Something went wrong");
       }
